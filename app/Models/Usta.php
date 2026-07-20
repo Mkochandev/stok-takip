@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Usta extends Model
 {
+    protected $table = 'ustalar';
+
     protected $fillable = [
         'ad',
         'soyad',

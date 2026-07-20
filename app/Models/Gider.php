@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Gider extends Model
 {
+    protected $table = 'giderler';
+
     protected $fillable = [
         'is_id',
         'tarih',
@@ -21,7 +23,7 @@ class Gider extends Model
         'tutar' => 'decimal:2',
     ];
 
-    public function is(): BelongsTo
+    public function ilgiliIs(): BelongsTo
     {
         return $this->belongsTo(Is::class, 'is_id');
     }

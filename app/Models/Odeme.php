@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Odeme extends Model
 {
+    protected $table = 'odemeler';
+
     protected $fillable = [
         'usta_id',
         'ay',

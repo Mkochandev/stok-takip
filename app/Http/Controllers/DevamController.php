@@ -19,7 +19,7 @@ class DevamController extends Controller
         $isler = Is::where('durum', 'devam_ediyor')->orderBy('is_adi')->get();
 
         // O günkü kayıtlar
-        $gunKayitlari = DevamKaydi::with(['usta', 'is'])
+        $gunKayitlari = DevamKaydi::with(['usta', 'ilgiliIs'])
             ->whereDate('tarih', $tarih)
             ->get()
             ->keyBy('usta_id');

@@ -55,7 +55,7 @@ class DashboardController extends Controller
             ->get();
 
         // Son devam kayıtları
-        $sonKayitlar = DevamKaydi::with(['usta', 'is'])
+        $sonKayitlar = DevamKaydi::with(['usta', 'ilgiliIs'])
             ->orderByDesc('tarih')
             ->limit(10)
             ->get();

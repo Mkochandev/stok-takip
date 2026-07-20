@@ -44,7 +44,7 @@ class UstaController extends Controller
         $buYil = now()->year;
 
         $aylikKayitlar = $usta->devamKayitlari()
-            ->with('is')
+            ->with('ilgiliIs')
             ->whereMonth('tarih', $buAy)
             ->whereYear('tarih', $buYil)
             ->orderBy('tarih')

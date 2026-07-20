@@ -19,7 +19,7 @@ class GelirGiderController extends Controller
         $giderler = collect();
 
         if ($tip === 'tumu' || $tip === 'gelir') {
-            $gelirler = Gelir::with('is')
+            $gelirler = Gelir::with('ilgiliIs')
                 ->whereMonth('tarih', $ay)
                 ->whereYear('tarih', $yil)
                 ->orderByDesc('tarih')
@@ -27,7 +27,7 @@ class GelirGiderController extends Controller
         }
 
         if ($tip === 'tumu' || $tip === 'gider') {
-            $giderler = Gider::with('is')
+            $giderler = Gider::with('ilgiliIs')
                 ->whereMonth('tarih', $ay)
                 ->whereYear('tarih', $yil)
                 ->orderByDesc('tarih')

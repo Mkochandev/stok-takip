@@ -30,7 +30,7 @@ class DevamKaydi extends Model
         return $this->belongsTo(Usta::class);
     }
 
-    public function is(): BelongsTo
+    public function ilgiliIs(): BelongsTo
     {
         return $this->belongsTo(Is::class, 'is_id');
     }
