@@ -13,6 +13,7 @@ class AylikHesapController extends Controller
     {
         $ay  = $request->get('ay', now()->month);
         $yil = $request->get('yil', now()->year);
+        $aramaQuery = $request->get('q', '');
 
         $aylar = [
             1=>'Ocak',2=>'Şubat',3=>'Mart',4=>'Nisan',
@@ -36,10 +37,10 @@ class AylikHesapController extends Controller
                 ->whereYear('tarih', $yil)
                 ->get();
 
-            $tamGun   = $kayitlar->where('calisma_tipi', 'tam')->count();
-            $yarimGun = $kayitlar->where('calisma_tipi', 'yarim')->count();
+            $tamGun     = $kayitlar->where('calisma_tipi', 'tam')->count();
+            $yarimGun   = $kayitlar->where('calisma_tipi', 'yarim')->count();
             $mesaiSaati = $kayitlar->where('calisma_tipi', 'mesai')->sum('mesai_saati');
-            $toplam   = $kayitlar->sum('hesaplanan_ucret');
+            $toplam     = $kayitlar->sum('hesaplanan_ucret');
 
             $odeme = Odeme::where('usta_id', $usta->id)
                 ->where('ay', $ay)
@@ -47,18 +48,27 @@ class AylikHesapController extends Controller
                 ->first();
 
             return [
-                'usta'         => $usta,
-                'tam_gun'      => $tamGun,
-                'yarim_gun'    => $yarimGun,
-                'mesai_saati'  => $mesaiSaati,
+                'usta'           => $usta,
+                'tam_gun'        => $tamGun,
+                'yarim_gun'      => $yarimGun,
+                'mesai_saati'    => $mesaiSaati,
                 'toplam_hakedis' => $toplam,
-                'odeme'        => $odeme,
-                'kalan'        => $odeme ? $odeme->kalan_bakiye : $toplam,
-                'kapandi'      => $odeme?->kapandi ?? false,
+                'odeme'          => $odeme,
+                'kalan'          => $odeme ? $odeme->kalan_bakiye : $toplam,
+                'kapandi'        => $odeme?->kapandi ?? false,
             ];
         });
 
-        return view('aylik-hesap.index', compact('ay', 'yil', 'aylar', 'yillar', 'hesaplar'));
+        // Usta arama filtresi
+        if ($aramaQuery) {
+            $aramaLower = mb_strtolower($aramaQuery);
+            $hesaplar = $hesaplar->filter(function ($h) use ($aramaLower) {
+                return str_contains(mb_strtolower($h['usta']->ad_soyad), $aramaLower)
+                    || str_contains(mb_strtolower($h['usta']->uzmanlik ?? ''), $aramaLower);
+            });
+        }
+
+        return view('aylik-hesap.index', compact('ay', 'yil', 'aylar', 'yillar', 'hesaplar', 'aramaQuery'));
     }
 
     public function odemeYap(Request $request)

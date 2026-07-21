@@ -29,10 +29,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     // Ustalar
-    Route::resource('ustalar', UstaController::class);
+    Route::resource('ustalar', UstaController::class)->parameters(['ustalar' => 'usta']);
 
     // İşler
-    Route::resource('isler', IsController::class);
+    Route::resource('isler', IsController::class)->parameters(['isler' => 'is']);
 
     // Devam Takibi
     Route::get('/devam', [DevamController::class, 'index'])->name('devam.index');

@@ -9,9 +9,36 @@
 
 @section('content')
 
+{{-- Arama Çubuğu --}}
+<div class="card" style="margin-bottom:16px; padding:16px;">
+    <form method="GET" action="{{ route('isler.index') }}" style="display:flex; gap:10px; align-items:center;">
+        <div style="position:relative; flex:1; max-width:420px;">
+            <span style="position:absolute; left:12px; top:50%; transform:translateY(-50%); font-size:1rem; pointer-events:none;">🔍</span>
+            <input
+                type="text"
+                name="q"
+                value="{{ $query ?? '' }}"
+                placeholder="İş adı, müşteri veya adres ara..."
+                class="form-control"
+                style="padding-left:38px;"
+                id="isArama"
+            >
+        </div>
+        <button type="submit" class="btn btn-primary btn-sm">Ara</button>
+        @if($query)
+            <a href="{{ route('isler.index') }}" class="btn btn-secondary btn-sm">✕ Temizle</a>
+        @endif
+    </form>
+</div>
+
 <div class="card">
     <div class="card-header">
-        <span class="card-title">Tüm İşler</span>
+        <span class="card-title">
+            Tüm İşler
+            @if($query)
+                <span class="badge badge-primary" style="margin-left:8px;">"{{ $query }}" araması</span>
+            @endif
+        </span>
         <span class="badge badge-secondary">{{ $isler->total() }} iş</span>
     </div>
 
@@ -63,12 +90,12 @@
                     </td>
                     <td>
                         <div class="d-flex gap-2">
-                            <a href="{{ route('isler.show', $is) }}" class="btn btn-secondary btn-sm">👁️</a>
-                            <a href="{{ route('isler.edit', $is) }}" class="btn btn-warning btn-sm">✏️</a>
-                            <form action="{{ route('isler.destroy', $is) }}" method="POST"
+                            <a href="{{ route('isler.show', $is->id) }}" class="btn btn-secondary btn-sm" title="Detay">👁️</a>
+                            <a href="{{ route('isler.edit', $is->id) }}" class="btn btn-warning btn-sm" title="Düzenle">✏️</a>
+                            <form action="{{ route('isler.destroy', $is->id) }}" method="POST"
                                   onsubmit="return confirm('{{ $is->is_adi }} silinsin mi?')">
                                 @csrf @method('DELETE')
-                                <button class="btn btn-danger btn-sm">🗑️</button>
+                                <button class="btn btn-danger btn-sm" title="Sil">🗑️</button>
                             </form>
                         </div>
                     </td>
@@ -76,7 +103,12 @@
                 @empty
                 <tr>
                     <td colspan="8" class="text-center text-muted" style="padding:40px;">
-                        Henüz iş eklenmemiş. <a href="{{ route('isler.create') }}">İlk işi ekle →</a>
+                        @if($query)
+                            "<strong>{{ $query }}</strong>" için sonuç bulunamadı.
+                            <a href="{{ route('isler.index') }}">Tümünü göster →</a>
+                        @else
+                            Henüz iş eklenmemiş. <a href="{{ route('isler.create') }}">İlk işi ekle →</a>
+                        @endif
                     </td>
                 </tr>
                 @endforelse

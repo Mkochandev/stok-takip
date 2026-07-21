@@ -9,10 +9,10 @@
     <div class="card">
         <div class="card-header">
             <span class="card-title">{{ $usta->ad_soyad }}</span>
-            <a href="{{ route('ustalar.show', $usta) }}" class="btn btn-secondary btn-sm">← Geri</a>
+            <a href="{{ route('ustalar.show', $usta->id) }}" class="btn btn-secondary btn-sm">← Geri</a>
         </div>
 
-        <form action="{{ route('ustalar.update', $usta) }}" method="POST">
+        <form action="{{ route('ustalar.update', $usta->id) }}" method="POST">
             @csrf @method('PUT')
 
             <div class="form-row">
@@ -71,7 +71,7 @@
 
             <div class="d-flex gap-2">
                 <button type="submit" class="btn btn-primary">💾 Güncelle</button>
-                <a href="{{ route('ustalar.show', $usta) }}" class="btn btn-secondary">İptal</a>
+                <a href="{{ route('ustalar.show', $usta->id) }}" class="btn btn-secondary">İptal</a>
             </div>
         </form>
     </div>

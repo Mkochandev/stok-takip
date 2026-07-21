@@ -8,9 +8,9 @@
     <div class="card">
         <div class="card-header">
             <span class="card-title">{{ $is->is_adi }}</span>
-            <a href="{{ route('isler.show', $is) }}" class="btn btn-secondary btn-sm">← Geri</a>
+            <a href="{{ route('isler.show', $is->id) }}" class="btn btn-secondary btn-sm">← Geri</a>
         </div>
-        <form action="{{ route('isler.update', $is) }}" method="POST">
+        <form action="{{ route('isler.update', $is->id) }}" method="POST">
             @csrf @method('PUT')
 
             <div class="form-group">
@@ -55,7 +55,7 @@
             </div>
             <div class="d-flex gap-2">
                 <button type="submit" class="btn btn-primary">💾 Güncelle</button>
-                <a href="{{ route('isler.show', $is) }}" class="btn btn-secondary">İptal</a>
+                <a href="{{ route('isler.show', $is->id) }}" class="btn btn-secondary">İptal</a>
             </div>
         </form>
     </div>

@@ -4,14 +4,28 @@ namespace App\Http\Controllers;
 
 use App\Models\Usta;
 use App\Models\DevamKaydi;
+use App\Models\Odeme;
 use Illuminate\Http\Request;
 
 class UstaController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $ustalar = Usta::orderBy('ad')->paginate(20);
-        return view('ustalar.index', compact('ustalar'));
+        $query = $request->get('q');
+
+        $ustalar = Usta::when($query, function ($q) use ($query) {
+                $q->where(function ($q2) use ($query) {
+                    $q2->where('ad', 'like', '%' . $query . '%')
+                       ->orWhere('soyad', 'like', '%' . $query . '%')
+                       ->orWhere('uzmanlik', 'like', '%' . $query . '%')
+                       ->orWhere('telefon', 'like', '%' . $query . '%');
+                });
+            })
+            ->orderBy('ad')
+            ->paginate(20)
+            ->withQueryString();
+
+        return view('ustalar.index', compact('ustalar', 'query'));
     }
 
     public function create()
@@ -32,15 +46,15 @@ class UstaController extends Controller
             'notlar'               => 'nullable|string',
         ]);
 
-        Usta::create($validated);
+        $usta = Usta::create($validated);
 
-        return redirect()->route('ustalar.index')
-            ->with('success', 'Usta başarıyla eklendi.');
+        return redirect()->route('ustalar.show', $usta->id)
+            ->with('success', $usta->ad_soyad . ' başarıyla eklendi.');
     }
 
     public function show(Usta $usta)
     {
-        $buAy = now()->month;
+        $buAy  = now()->month;
         $buYil = now()->year;
 
         $aylikKayitlar = $usta->devamKayitlari()
@@ -50,9 +64,22 @@ class UstaController extends Controller
             ->orderBy('tarih')
             ->get();
 
-        $aylikHakedis = $usta->aylikHakedis($buAy, $buYil);
-        $toplamOdenen = $usta->odemeler()->sum('odenen_tutar');
+        $aylikHakedis  = $usta->aylikHakedis($buAy, $buYil);
+        $toplamOdenen  = $usta->odemeler()->sum('odenen_tutar');
         $toplamHakedis = $usta->devamKayitlari()->sum('hesaplanan_ucret');
+        $toplamBorç    = max(0, $toplamHakedis - $toplamOdenen);
+
+        // Tüm ödeme geçmişi
+        $odemeler = $usta->odemeler()
+            ->orderByDesc('yil')
+            ->orderByDesc('ay')
+            ->get();
+
+        // Bu ay ödeme durumu
+        $buAyOdeme = Odeme::where('usta_id', $usta->id)
+            ->where('ay', $buAy)
+            ->where('yil', $buYil)
+            ->first();
 
         // Son 6 ay hakedis grafiği
         $aylikGrafikVeri = [];
@@ -70,6 +97,9 @@ class UstaController extends Controller
             'aylikHakedis',
             'toplamOdenen',
             'toplamHakedis',
+            'toplamBorç',
+            'odemeler',
+            'buAyOdeme',
             'aylikGrafikVeri',
         ));
     }
@@ -94,14 +124,15 @@ class UstaController extends Controller
 
         $usta->update($validated);
 
-        return redirect()->route('ustalar.show', $usta)
+        return redirect()->route('ustalar.show', $usta->id)
             ->with('success', 'Usta bilgileri güncellendi.');
     }
 
     public function destroy(Usta $usta)
     {
+        $ad = $usta->ad_soyad;
         $usta->delete();
         return redirect()->route('ustalar.index')
-            ->with('success', 'Usta silindi.');
+            ->with('success', $ad . ' silindi.');
     }
 }

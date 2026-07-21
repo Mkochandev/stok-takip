@@ -7,15 +7,25 @@ use Illuminate\Http\Request;
 
 class IsController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        $query = $request->get('q');
+
         $isler = Is::withCount('devamKayitlari')
             ->withSum('gelirler', 'tutar')
             ->withSum('giderler', 'tutar')
+            ->when($query, function ($q) use ($query) {
+                $q->where(function ($q2) use ($query) {
+                    $q2->where('is_adi', 'like', '%' . $query . '%')
+                       ->orWhere('musteri_adi', 'like', '%' . $query . '%')
+                       ->orWhere('adres', 'like', '%' . $query . '%');
+                });
+            })
             ->orderByDesc('created_at')
-            ->paginate(20);
+            ->paginate(20)
+            ->withQueryString();
 
-        return view('isler.index', compact('isler'));
+        return view('isler.index', compact('isler', 'query'));
     }
 
     public function create()
@@ -72,7 +82,7 @@ class IsController extends Controller
 
         $is->update($validated);
 
-        return redirect()->route('isler.show', $is)
+        return redirect()->route('isler.show', $is->id)
             ->with('success', 'İş bilgileri güncellendi.');
     }
 
