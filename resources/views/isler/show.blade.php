@@ -17,7 +17,7 @@
             <div style="font-size:1.2rem; font-weight:700;">{{ $is->is_adi }}</div>
             <div class="text-muted fs-sm" style="margin-top:2px;">
                 @if($is->musteri_adi) 👤 Müşteri: <strong>{{ $is->musteri_adi }}</strong> @endif
-                @if($is->isveren_no) &nbsp;·&nbsp; 🏢 İşveren No: <strong>{{ $is->isveren_no }}</strong> @endif
+                @if($is->isveren_telefon) &nbsp;·&nbsp; 📞 İşveren Tel: <a href="tel:{{ $is->isveren_telefon }}" style="color:var(--accent-primary);font-weight:600;">{{ $is->isveren_telefon }}</a> @endif
                 @if($is->adres) &nbsp;·&nbsp; 📍 Adres: {{ $is->adres }} @endif
             </div>
         </div>

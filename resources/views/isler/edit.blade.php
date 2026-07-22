@@ -23,9 +23,9 @@
                     <input type="text" id="musteri_adi" name="musteri_adi" class="form-control" value="{{ old('musteri_adi', $is->musteri_adi) }}">
                 </div>
                 <div class="form-group">
-                    <label class="form-label" for="isveren_no">İşveren Numarası (Opsiyonel)</label>
-                    <input type="text" id="isveren_no" name="isveren_no" class="form-control {{ $errors->has('isveren_no') ? 'input-error' : '' }}" value="{{ old('isveren_no', $is->isveren_no) }}" placeholder="Sicil / Vergi No">
-                    @error('isveren_no') <div class="error-text">{{ $message }}</div> @enderror
+                    <label class="form-label" for="isveren_telefon">İşveren Telefonu (Opsiyonel)</label>
+                    <input type="text" id="isveren_telefon" name="isveren_telefon" class="form-control {{ $errors->has('isveren_telefon') ? 'input-error' : '' }}" value="{{ old('isveren_telefon', $is->isveren_telefon) }}" placeholder="0532 000 00 00">
+                    @error('isveren_telefon') <div class="error-text">{{ $message }}</div> @enderror
                 </div>
             </div>
             <div class="form-group">

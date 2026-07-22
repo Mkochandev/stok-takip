@@ -315,11 +315,14 @@ const ustaUcretler = {
 };
 
 function toggleUsta(ustaId) {
-    const chk = document.getElementById('chk-' + ustaId);
-    const row  = document.getElementById('row-' + ustaId);
+    const chk   = document.getElementById('chk-' + ustaId);
+    const row   = document.getElementById('row-' + ustaId);
     const detay = document.getElementById('detay-' + ustaId);
     const bos   = document.getElementById('bos-' + ustaId);
     const ucret = document.getElementById('ucret-' + ustaId);
+
+    // Kapsayıcı içindeki tüm form elemanlarını seç
+    const inputs = detay.querySelectorAll('input, select, textarea');
 
     if (chk.checked) {
         row.classList.add('selected');
@@ -327,15 +330,27 @@ function toggleUsta(ustaId) {
         detay.classList.remove('d-none');
         bos.classList.add('d-none');
         ucret.classList.add('active');
-        // Varsayılan tam gün
+
+        // Form elemanlarını aktif et
+        inputs.forEach(el => el.disabled = false);
+
+        // Varsayılan tam gün veya mevcut tip
         const tip = document.getElementById('tip-' + ustaId).value || 'tam';
-        ucret.textContent = formatPara(ustaUcretler[ustaId][tip]);
+        if (tip === 'mesai') {
+            hesaplaUcret(ustaId, ustaUcretler[ustaId].mesai);
+        } else {
+            ucret.textContent = formatPara(ustaUcretler[ustaId][tip]);
+        }
     } else {
         row.classList.remove('selected');
         row.classList.add('calismiyor');
         detay.classList.add('d-none');
         bos.classList.remove('d-none');
         ucret.classList.remove('active');
+
+        // Form elemanlarını pasif et (disabled elemanlar submit edilmez)
+        inputs.forEach(el => el.disabled = true);
+
         ucret.textContent = formatPara(ustaUcretler[ustaId].tam);
     }
 }
@@ -363,7 +378,7 @@ function secTip(ustaId, tip, tam, yarim, mesaiSaat) {
     const ucretEl = document.getElementById('ucret-' + ustaId);
     if (tip === 'tam') ucretEl.textContent = formatPara(tam);
     else if (tip === 'yarim') ucretEl.textContent = formatPara(yarim);
-    else ucretEl.textContent = '? ₺';
+    else if (tip === 'mesai') hesaplaUcret(ustaId, mesaiSaat);
 }
 
 function hesaplaUcret(ustaId, saatlikUcret) {
@@ -384,5 +399,12 @@ function hepsiniSec() {
         }
     });
 }
+
+// Sayfa yüklendiğinde usta durumlarını ve disabled durumlarını ilklendir
+document.addEventListener('DOMContentLoaded', () => {
+    Object.keys(ustaUcretler).forEach(id => {
+        toggleUsta(parseInt(id));
+    });
+});
 </script>
 @endpush

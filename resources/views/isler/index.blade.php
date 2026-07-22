@@ -18,7 +18,7 @@
                 type="text"
                 name="q"
                 value="{{ $query ?? '' }}"
-                placeholder="İş adı, müşteri, işveren no veya adres ara..."
+                placeholder="İş adı, müşteri, işveren tel veya adres ara..."
                 class="form-control"
                 style="padding-left:38px;"
                 id="isArama"
@@ -47,7 +47,7 @@
             <thead>
                 <tr>
                     <th>İş Adı</th>
-                    <th>Müşteri / İşveren No</th>
+                    <th>Müşteri / İşveren Tel</th>
                     <th>Durum</th>
                     <th>Başlangıç</th>
                     <th>Gelir</th>
@@ -72,8 +72,8 @@
                     </td>
                     <td class="text-muted">
                         <div>{{ $is->musteri_adi ?? '—' }}</div>
-                        @if($is->isveren_no)
-                            <div class="fs-sm text-muted">🏢 No: {{ $is->isveren_no }}</div>
+                        @if($is->isveren_telefon)
+                            <div class="fs-sm text-muted">📞 {{ $is->isveren_telefon }}</div>
                         @endif
                     </td>
                     <td>

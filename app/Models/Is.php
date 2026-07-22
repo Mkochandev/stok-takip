@@ -12,7 +12,7 @@ class Is extends Model
     protected $fillable = [
         'is_adi',
         'musteri_adi',
-        'isveren_no',
+        'isveren_telefon',
         'adres',
         'baslangic_tarihi',
         'bitis_tarihi',

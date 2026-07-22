@@ -45,39 +45,51 @@ class DevamController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'tarih'        => 'required|date',
-            'kayitlar'     => 'required|array',
-            'kayitlar.*.usta_id'       => 'required|exists:ustalar,id',
-            'kayitlar.*.calisma_tipi'  => 'required|in:tam,yarim,mesai',
-            'kayitlar.*.is_id'         => 'nullable|exists:isler,id',
-            'kayitlar.*.mesai_saati'   => 'nullable|numeric|min:0.5|max:24',
-            'kayitlar.*.notlar'        => 'nullable|string',
+            'tarih'    => 'required|date',
+            'kayitlar' => 'nullable|array',
         ]);
 
         $tarih = $request->tarih;
+        $kayitlar = $request->input('kayitlar', []);
 
-        foreach ($request->kayitlar as $kayit) {
+        $gonderilenUstaIdleri = [];
+
+        foreach ($kayitlar as $kayit) {
+            if (!isset($kayit['usta_id'])) {
+                continue;
+            }
+
+            $gonderilenUstaIdleri[] = $kayit['usta_id'];
             $usta = Usta::findOrFail($kayit['usta_id']);
+            
+            $calismaTipi = $kayit['calisma_tipi'] ?? 'tam';
+            $mesaiSaati  = ($calismaTipi === 'mesai' && isset($kayit['mesai_saati'])) ? (float)$kayit['mesai_saati'] : null;
+
             $ucret = DevamKaydi::hesaplaUcret(
                 $usta,
-                $kayit['calisma_tipi'],
-                isset($kayit['mesai_saati']) ? (float)$kayit['mesai_saati'] : null
+                $calismaTipi,
+                $mesaiSaati
             );
 
             DevamKaydi::updateOrCreate(
                 ['usta_id' => $kayit['usta_id'], 'tarih' => $tarih],
                 [
-                    'is_id'           => $kayit['is_id'] ?? null,
-                    'calisma_tipi'    => $kayit['calisma_tipi'],
-                    'mesai_saati'     => $kayit['calisma_tipi'] === 'mesai' ? ($kayit['mesai_saati'] ?? null) : null,
-                    'hesaplanan_ucret'=> $ucret,
-                    'notlar'          => $kayit['notlar'] ?? null,
+                    'is_id'            => !empty($kayit['is_id']) ? $kayit['is_id'] : null,
+                    'calisma_tipi'     => $calismaTipi,
+                    'mesai_saati'      => $mesaiSaati,
+                    'hesaplanan_ucret' => $ucret,
+                    'notlar'           => $kayit['notlar'] ?? null,
                 ]
             );
         }
 
+        // Seçilmeyen ustaların o günkü kaydı varsa temizle
+        DevamKaydi::whereDate('tarih', $tarih)
+            ->whereNotIn('usta_id', $gonderilenUstaIdleri)
+            ->delete();
+
         return redirect()->route('devam.index', ['tarih' => $tarih])
-            ->with('success', 'Devam kayıtları kaydedildi.');
+            ->with('success', 'Devam kayıtları güncellendi.');
     }
 
     public function destroy(DevamKaydi $devam)
