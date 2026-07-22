@@ -41,6 +41,24 @@
     align-items: center;
     transition: border-color var(--transition);
 }
+@media (max-width: 768px) {
+    .date-nav {
+        flex-wrap: wrap;
+        padding: 12px;
+        gap: 10px;
+    }
+    .date-nav form {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        gap: 8px;
+    }
+    .usta-row {
+        grid-template-columns: 1fr;
+        gap: 12px;
+        padding: 14px;
+    }
+}
 .usta-row.selected {
     border-color: var(--accent-primary);
     background: rgba(79,110,247,0.05);

@@ -2,7 +2,7 @@
 <html lang="tr">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'Dashboard') — Gazi Ustam</title>
     <meta name="description" content="Gazi Ustam - Usta ve iş takip yönetim sistemi">
@@ -25,10 +25,11 @@
     <aside class="sidebar" id="sidebar">
         <div class="sidebar-logo">
             <div class="logo-icon">⚙️</div>
-            <div>
+            <div style="flex: 1;">
                 <div class="logo-text">Gazi Ustam</div>
                 <div class="logo-sub">Yönetim Paneli</div>
             </div>
+            <button class="mobile-close-btn" onclick="toggleSidebar()" aria-label="Kapat">✕</button>
         </div>
 
         <nav class="sidebar-nav">
@@ -102,13 +103,13 @@
 
         {{-- Top Header --}}
         <header class="top-header">
-            <div style="display:flex; align-items:center; gap:12px;">
-                <button class="mobile-menu-btn" id="mobileMenuBtn" onclick="toggleSidebar()">☰</button>
+            <div style="display:flex; align-items:center; gap:12px; min-width:0;">
+                <button class="mobile-menu-btn" id="mobileMenuBtn" onclick="toggleSidebar()" aria-label="Menü">☰</button>
                 <h1 class="page-title">@yield('page-title', 'Dashboard')</h1>
             </div>
             <div class="header-actions">
                 @yield('header-actions')
-                <span style="font-size:0.8rem; color:var(--text-muted); margin-left:8px;">
+                <span class="header-date">
                     {{ now()->locale('tr')->isoFormat('D MMMM YYYY, dddd') }}
                 </span>
             </div>
@@ -116,12 +117,12 @@
 
         {{-- Flash Messages --}}
         @if(session('success'))
-            <div style="margin: 16px 24px 0;" id="flashMsg">
+            <div class="flash-wrapper" id="flashMsg">
                 <div class="alert alert-success fade-in">✅ {{ session('success') }}</div>
             </div>
         @endif
         @if(session('error'))
-            <div style="margin: 16px 24px 0;" id="flashMsg">
+            <div class="flash-wrapper" id="flashMsg">
                 <div class="alert alert-danger fade-in">❌ {{ session('error') }}</div>
             </div>
         @endif
@@ -131,6 +132,30 @@
             @yield('content')
         </main>
     </div>
+
+    {{-- ===== MOBILE BOTTOM NAVIGATION BAR ===== --}}
+    <nav class="mobile-bottom-nav">
+        <a href="{{ route('dashboard') }}" class="bottom-nav-item {{ request()->routeIs('dashboard') ? 'active' : '' }}">
+            <span class="bottom-nav-icon">📊</span>
+            <span class="bottom-nav-label">Dashboard</span>
+        </a>
+        <a href="{{ route('ustalar.index') }}" class="bottom-nav-item {{ request()->routeIs('ustalar.*') ? 'active' : '' }}">
+            <span class="bottom-nav-icon">👷</span>
+            <span class="bottom-nav-label">Ustalar</span>
+        </a>
+        <a href="{{ route('isler.index') }}" class="bottom-nav-item {{ request()->routeIs('isler.*') ? 'active' : '' }}">
+            <span class="bottom-nav-icon">🏢</span>
+            <span class="bottom-nav-label">İşler</span>
+        </a>
+        <a href="{{ route('devam.index') }}" class="bottom-nav-item {{ request()->routeIs('devam.*') ? 'active' : '' }}">
+            <span class="bottom-nav-icon">📅</span>
+            <span class="bottom-nav-label">Devam</span>
+        </a>
+        <button type="button" onclick="toggleSidebar()" class="bottom-nav-item {{ (request()->routeIs('aylik-hesap.*') || request()->routeIs('gelir-gider.*')) ? 'active' : '' }}">
+            <span class="bottom-nav-icon">⚙️</span>
+            <span class="bottom-nav-label">Menü</span>
+        </button>
+    </nav>
 
     {{-- Mobile overlay --}}
     <div id="sidebarOverlay" onclick="toggleSidebar()"
@@ -145,9 +170,11 @@ function toggleSidebar() {
     if (isOpen) {
         sidebar.classList.remove('open');
         overlay.style.display = 'none';
+        document.body.style.overflow = '';
     } else {
         sidebar.classList.add('open');
         overlay.style.display = 'block';
+        document.body.style.overflow = 'hidden';
     }
 }
 

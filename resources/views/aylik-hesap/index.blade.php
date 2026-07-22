@@ -73,7 +73,7 @@
 
 {{-- Ay/Yıl Seçici + Arama --}}
 <div class="card" style="margin-bottom:20px;">
-    <form method="GET" action="{{ route('aylik-hesap.index') }}" class="d-flex align-center gap-3" style="flex-wrap:wrap;">
+    <form method="GET" action="{{ route('aylik-hesap.index') }}" class="filter-bar">
         <div>
             <label class="form-label">Ay</label>
             <select name="ay" class="form-select" style="width:130px;">
@@ -90,7 +90,7 @@
                 @endforeach
             </select>
         </div>
-        <div style="flex:1; min-width:200px;">
+        <div style="flex:1; min-width:180px;">
             <label class="form-label">Usta Ara</label>
             <div style="position:relative;">
                 <span style="position:absolute; left:12px; top:50%; transform:translateY(-50%); pointer-events:none;">🔍</span>
@@ -105,7 +105,7 @@
                 <a href="{{ route('aylik-hesap.index', ['ay' => $ay, 'yil' => $yil]) }}" class="btn btn-secondary btn-sm" style="margin-left:4px;">✕</a>
             @endif
         </div>
-        <div style="margin-left:auto; align-self:flex-end; font-size:0.85rem; color:var(--text-muted);">
+        <div class="filter-period" style="margin-left:auto; align-self:flex-end; font-size:0.85rem; color:var(--text-muted);">
             {{ $aylar[$ay] ?? '' }} {{ $yil }} dönemi
         </div>
     </form>

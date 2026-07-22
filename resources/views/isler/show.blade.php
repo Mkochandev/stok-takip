@@ -66,7 +66,7 @@
     </div>
 </div>
 
-<div style="display:grid; grid-template-columns:1fr 1fr; gap:20px;">
+<div class="two-col-grid">
 
     {{-- Gelirler --}}
     <div class="card">

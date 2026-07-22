@@ -80,7 +80,7 @@
 </div>
 
 {{-- Grafik + Top Ustalar --}}
-<div style="display:grid; grid-template-columns: 2fr 1fr; gap:20px; margin-bottom:24px;">
+<div class="dashboard-grid">
 
     <div class="card">
         <div class="card-header">

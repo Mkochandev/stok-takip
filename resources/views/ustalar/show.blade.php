@@ -186,7 +186,7 @@
 </div>
 
 {{-- ===== ANA SAYFA İÇERİĞİ ===== --}}
-<div style="display:grid; grid-template-columns: 310px 1fr; gap:20px; align-items:start;">
+<div class="profile-grid">
 
     {{-- ===== Sol Panel ===== --}}
     <div style="display:flex; flex-direction:column; gap:16px;">
