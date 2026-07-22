@@ -104,7 +104,6 @@
         {{-- Top Header --}}
         <header class="top-header">
             <div style="display:flex; align-items:center; gap:12px; min-width:0;">
-                <button class="mobile-menu-btn" id="mobileMenuBtn" onclick="toggleSidebar()" aria-label="Menü">☰</button>
                 <h1 class="page-title">@yield('page-title', 'Dashboard')</h1>
             </div>
             <div class="header-actions">
@@ -112,6 +111,12 @@
                 <span class="header-date">
                     {{ now()->locale('tr')->isoFormat('D MMMM YYYY, dddd') }}
                 </span>
+                <form method="POST" action="{{ route('logout') }}" style="margin:0;">
+                    @csrf
+                    <button type="submit" class="btn btn-danger btn-sm" title="Çıkış Yap" style="padding:6px 10px;">
+                        🚪 <span class="logout-btn-label">Çıkış</span>
+                    </button>
+                </form>
             </div>
         </header>
 
@@ -156,10 +161,14 @@
         <span class="bottom-nav-icon">📅</span>
         <span class="bottom-nav-label">Devam</span>
     </a>
-    <button type="button" onclick="toggleSidebar()" class="bottom-nav-item {{ (request()->routeIs('aylik-hesap.*') || request()->routeIs('gelir-gider.*')) ? 'active' : '' }}">
-        <span class="bottom-nav-icon">⚙️</span>
-        <span class="bottom-nav-label">Menü</span>
-    </button>
+    <a href="{{ route('aylik-hesap.index') }}" class="bottom-nav-item {{ request()->routeIs('aylik-hesap.*') ? 'active' : '' }}">
+        <span class="bottom-nav-icon">💰</span>
+        <span class="bottom-nav-label">Hesap</span>
+    </a>
+    <a href="{{ route('gelir-gider.index') }}" class="bottom-nav-item {{ request()->routeIs('gelir-gider.*') ? 'active' : '' }}">
+        <span class="bottom-nav-icon">📈</span>
+        <span class="bottom-nav-label">Finans</span>
+    </a>
 </nav>
 
 <script>
