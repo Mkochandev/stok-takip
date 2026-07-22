@@ -18,7 +18,7 @@
                 type="text"
                 name="q"
                 value="{{ $query ?? '' }}"
-                placeholder="İş adı, müşteri veya adres ara..."
+                placeholder="İş adı, müşteri, işveren no veya adres ara..."
                 class="form-control"
                 style="padding-left:38px;"
                 id="isArama"
@@ -47,7 +47,7 @@
             <thead>
                 <tr>
                     <th>İş Adı</th>
-                    <th>Müşteri</th>
+                    <th>Müşteri / İşveren No</th>
                     <th>Durum</th>
                     <th>Başlangıç</th>
                     <th>Gelir</th>
@@ -70,7 +70,12 @@
                             <div class="text-muted fs-sm">📍 {{ Str::limit($is->adres, 40) }}</div>
                         @endif
                     </td>
-                    <td class="text-muted">{{ $is->musteri_adi ?? '—' }}</td>
+                    <td class="text-muted">
+                        <div>{{ $is->musteri_adi ?? '—' }}</div>
+                        @if($is->isveren_no)
+                            <div class="fs-sm text-muted">🏢 No: {{ $is->isveren_no }}</div>
+                        @endif
+                    </td>
                     <td>
                         @if($is->durum === 'devam_ediyor')
                             <span class="badge badge-success">⚙️ Devam Ediyor</span>

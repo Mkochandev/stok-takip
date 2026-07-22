@@ -13,6 +13,7 @@ class Usta extends Model
         'ad',
         'soyad',
         'telefon',
+        'iban',
         'gunluk_ucret',
         'mesai_saatlik_ucret',
         'uzmanlik',

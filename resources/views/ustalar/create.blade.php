@@ -43,6 +43,13 @@
                 </div>
             </div>
 
+            <div class="form-group">
+                <label class="form-label" for="iban">IBAN Numarası (Opsiyonel)</label>
+                <input type="text" id="iban" name="iban" class="form-control {{ $errors->has('iban') ? 'input-error' : '' }}"
+                       value="{{ old('iban') }}" placeholder="TR000000000000000000000000">
+                @error('iban') <div class="error-text">{{ $message }}</div> @enderror
+            </div>
+
             <div class="form-row">
                 <div class="form-group">
                     <label class="form-label" for="gunluk_ucret">Günlük Ücret (₺) *</label>

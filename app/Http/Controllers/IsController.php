@@ -18,6 +18,7 @@ class IsController extends Controller
                 $q->where(function ($q2) use ($query) {
                     $q2->where('is_adi', 'like', '%' . $query . '%')
                        ->orWhere('musteri_adi', 'like', '%' . $query . '%')
+                       ->orWhere('isveren_no', 'like', '%' . $query . '%')
                        ->orWhere('adres', 'like', '%' . $query . '%');
                 });
             })
@@ -38,6 +39,7 @@ class IsController extends Controller
         $validated = $request->validate([
             'is_adi'          => 'required|string|max:200',
             'musteri_adi'     => 'nullable|string|max:200',
+            'isveren_no'      => 'nullable|string|max:50',
             'adres'           => 'nullable|string|max:500',
             'baslangic_tarihi'=> 'nullable|date',
             'bitis_tarihi'    => 'nullable|date|after_or_equal:baslangic_tarihi',
@@ -72,6 +74,7 @@ class IsController extends Controller
         $validated = $request->validate([
             'is_adi'          => 'required|string|max:200',
             'musteri_adi'     => 'nullable|string|max:200',
+            'isveren_no'      => 'nullable|string|max:50',
             'adres'           => 'nullable|string|max:500',
             'baslangic_tarihi'=> 'nullable|date',
             'bitis_tarihi'    => 'nullable|date|after_or_equal:baslangic_tarihi',

@@ -23,9 +23,14 @@
                     <input type="text" id="musteri_adi" name="musteri_adi" class="form-control" value="{{ old('musteri_adi', $is->musteri_adi) }}">
                 </div>
                 <div class="form-group">
-                    <label class="form-label" for="sozlesme_tutari">Sözleşme Tutarı (₺)</label>
-                    <input type="number" id="sozlesme_tutari" name="sozlesme_tutari" class="form-control" value="{{ old('sozlesme_tutari', $is->sozlesme_tutari) }}" min="0" step="0.01">
+                    <label class="form-label" for="isveren_no">İşveren Numarası (Opsiyonel)</label>
+                    <input type="text" id="isveren_no" name="isveren_no" class="form-control {{ $errors->has('isveren_no') ? 'input-error' : '' }}" value="{{ old('isveren_no', $is->isveren_no) }}" placeholder="Sicil / Vergi No">
+                    @error('isveren_no') <div class="error-text">{{ $message }}</div> @enderror
                 </div>
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="sozlesme_tutari">Sözleşme Tutarı (₺)</label>
+                <input type="number" id="sozlesme_tutari" name="sozlesme_tutari" class="form-control" value="{{ old('sozlesme_tutari', $is->sozlesme_tutari) }}" min="0" step="0.01">
             </div>
             <div class="form-group">
                 <label class="form-label" for="adres">Adres</label>

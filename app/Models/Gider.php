@@ -11,6 +11,7 @@ class Gider extends Model
 
     protected $fillable = [
         'is_id',
+        'usta_id',
         'tarih',
         'tutar',
         'aciklama',
@@ -26,5 +27,18 @@ class Gider extends Model
     public function ilgiliIs(): BelongsTo
     {
         return $this->belongsTo(Is::class, 'is_id');
+    }
+
+    public function usta(): BelongsTo
+    {
+        return $this->belongsTo(Usta::class, 'usta_id');
+    }
+
+    /**
+     * İşçi ödemesi mi?
+     */
+    public function isIsciOdemesi(): bool
+    {
+        return $this->kategori === 'isci_odemesi';
     }
 }

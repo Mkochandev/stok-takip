@@ -140,18 +140,33 @@
                         <td class="text-muted fs-sm">{{ $gider->tarih->locale('tr')->isoFormat('D MMM') }}</td>
                         <td>
                             {{ $gider->aciklama }}
-                            @if($gider->ilgiliIs)
+                            @if($gider->kategori === 'isci_odemesi' && $gider->usta)
+                                <div class="text-muted fs-sm">
+                                    👷 <a href="{{ route('ustalar.show', $gider->usta->id) }}"
+                                          style="color:var(--accent-primary);">{{ $gider->usta->ad_soyad }}</a>
+                                </div>
+                            @elseif($gider->ilgiliIs)
                                 <div class="text-muted fs-sm">{{ $gider->ilgiliIs->is_adi }}</div>
                             @endif
                         </td>
-                        <td><span class="badge badge-warning">{{ $gider->kategori }}</span></td>
+                        <td>
+                            @if($gider->kategori === 'isci_odemesi')
+                                <span class="badge badge-primary">👷 İşçi Ödemesi</span>
+                            @else
+                                <span class="badge badge-warning">{{ $gider->kategori }}</span>
+                            @endif
+                        </td>
                         <td class="text-danger fw-bold">{{ number_format($gider->tutar, 0, ',', '.') }}₺</td>
                         <td>
+                            @if($gider->kategori !== 'isci_odemesi')
                             <form action="{{ route('gelir-gider.destroyGider', $gider) }}" method="POST"
                                   onsubmit="return confirm('Silinsin mi?')">
                                 @csrf @method('DELETE')
                                 <button class="btn btn-danger btn-sm">🗑️</button>
                             </form>
+                            @else
+                                <span class="text-muted fs-sm" title="Ödeme sayfasından yönetin">🔒</span>
+                            @endif
                         </td>
                     </tr>
                     @empty

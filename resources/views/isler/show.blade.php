@@ -10,6 +10,30 @@
 
 @section('content')
 
+{{-- İş Genel Bilgileri --}}
+<div class="card" style="margin-bottom:20px;">
+    <div style="display:flex; flex-wrap:wrap; gap:20px; align-items:center; justify-content:space-between;">
+        <div>
+            <div style="font-size:1.2rem; font-weight:700;">{{ $is->is_adi }}</div>
+            <div class="text-muted fs-sm" style="margin-top:2px;">
+                @if($is->musteri_adi) 👤 Müşteri: <strong>{{ $is->musteri_adi }}</strong> @endif
+                @if($is->isveren_no) &nbsp;·&nbsp; 🏢 İşveren No: <strong>{{ $is->isveren_no }}</strong> @endif
+                @if($is->adres) &nbsp;·&nbsp; 📍 Adres: {{ $is->adres }} @endif
+            </div>
+        </div>
+        <div>
+            <span class="badge badge-{{ $is->durum_renk }}" style="font-size:0.9rem; padding:6px 12px;">
+                {{ $is->durum_etiket }}
+            </span>
+            @if($is->sozlesme_tutari)
+                <div class="fs-sm text-muted text-right" style="margin-top:4px;">
+                    Sözleşme: <strong class="text-primary">{{ number_format($is->sozlesme_tutari, 0, ',', '.') }}₺</strong>
+                </div>
+            @endif
+        </div>
+    </div>
+</div>
+
 {{-- Özet Kartlar --}}
 <div class="stats-grid" style="margin-bottom:20px;">
     <div class="stat-card">

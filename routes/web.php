@@ -53,4 +53,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/aylik-hesap', [AylikHesapController::class, 'index'])->name('aylik-hesap.index');
     Route::post('/aylik-hesap/odeme', [AylikHesapController::class, 'odemeYap'])->name('aylik-hesap.odeme');
     Route::post('/aylik-hesap/kapat', [AylikHesapController::class, 'hesabiKapat'])->name('aylik-hesap.kapat');
+    Route::get('/aylik-hesap/hakedis-bilgi', [AylikHesapController::class, 'hakedisJson'])->name('aylik-hesap.hakedis-bilgi');
+    Route::get('/aylik-hesap/pdf/{usta}', [AylikHesapController::class, 'pdf'])->name('aylik-hesap.pdf');
 });
