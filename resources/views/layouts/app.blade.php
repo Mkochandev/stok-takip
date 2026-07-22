@@ -13,7 +13,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
     <!-- App CSS -->
-    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}?v={{ time() }}">
 
     @stack('styles')
 </head>
@@ -133,34 +133,34 @@
         </main>
     </div>
 
-    {{-- ===== MOBILE BOTTOM NAVIGATION BAR ===== --}}
-    <nav class="mobile-bottom-nav">
-        <a href="{{ route('dashboard') }}" class="bottom-nav-item {{ request()->routeIs('dashboard') ? 'active' : '' }}">
-            <span class="bottom-nav-icon">📊</span>
-            <span class="bottom-nav-label">Dashboard</span>
-        </a>
-        <a href="{{ route('ustalar.index') }}" class="bottom-nav-item {{ request()->routeIs('ustalar.*') ? 'active' : '' }}">
-            <span class="bottom-nav-icon">👷</span>
-            <span class="bottom-nav-label">Ustalar</span>
-        </a>
-        <a href="{{ route('isler.index') }}" class="bottom-nav-item {{ request()->routeIs('isler.*') ? 'active' : '' }}">
-            <span class="bottom-nav-icon">🏢</span>
-            <span class="bottom-nav-label">İşler</span>
-        </a>
-        <a href="{{ route('devam.index') }}" class="bottom-nav-item {{ request()->routeIs('devam.*') ? 'active' : '' }}">
-            <span class="bottom-nav-icon">📅</span>
-            <span class="bottom-nav-label">Devam</span>
-        </a>
-        <button type="button" onclick="toggleSidebar()" class="bottom-nav-item {{ (request()->routeIs('aylik-hesap.*') || request()->routeIs('gelir-gider.*')) ? 'active' : '' }}">
-            <span class="bottom-nav-icon">⚙️</span>
-            <span class="bottom-nav-label">Menü</span>
-        </button>
-    </nav>
-
     {{-- Mobile overlay --}}
     <div id="sidebarOverlay" onclick="toggleSidebar()"
-         style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:99;backdrop-filter:blur(2px);"></div>
+         style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:9999;backdrop-filter:blur(2px);"></div>
 </div>
+
+{{-- ===== MOBILE BOTTOM NAVIGATION BAR ===== --}}
+<nav class="mobile-bottom-nav">
+    <a href="{{ route('dashboard') }}" class="bottom-nav-item {{ request()->routeIs('dashboard') ? 'active' : '' }}">
+        <span class="bottom-nav-icon">📊</span>
+        <span class="bottom-nav-label">Dashboard</span>
+    </a>
+    <a href="{{ route('ustalar.index') }}" class="bottom-nav-item {{ request()->routeIs('ustalar.*') ? 'active' : '' }}">
+        <span class="bottom-nav-icon">👷</span>
+        <span class="bottom-nav-label">Ustalar</span>
+    </a>
+    <a href="{{ route('isler.index') }}" class="bottom-nav-item {{ request()->routeIs('isler.*') ? 'active' : '' }}">
+        <span class="bottom-nav-icon">🏢</span>
+        <span class="bottom-nav-label">İşler</span>
+    </a>
+    <a href="{{ route('devam.index') }}" class="bottom-nav-item {{ request()->routeIs('devam.*') ? 'active' : '' }}">
+        <span class="bottom-nav-icon">📅</span>
+        <span class="bottom-nav-label">Devam</span>
+    </a>
+    <button type="button" onclick="toggleSidebar()" class="bottom-nav-item {{ (request()->routeIs('aylik-hesap.*') || request()->routeIs('gelir-gider.*')) ? 'active' : '' }}">
+        <span class="bottom-nav-icon">⚙️</span>
+        <span class="bottom-nav-label">Menü</span>
+    </button>
+</nav>
 
 <script>
 function toggleSidebar() {
