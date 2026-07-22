@@ -96,13 +96,13 @@
             <span class="card-title">🏆 Bu Ay En Çok Çalışan</span>
         </div>
         @forelse($enCokCalisan as $i => $kayit)
-            <div class="top-usta-item">
+            <a href="{{ route('ustalar.show', $kayit->usta_id) }}" class="top-usta-item" style="color:inherit; text-decoration:none;">
                 <div class="rank-badge rank-{{ $i+1 }}">{{ $i+1 }}</div>
                 <div class="avatar-circle" style="width:32px;height:32px;font-size:0.75rem;">
                     {{ strtoupper(mb_substr($kayit->usta->ad ?? '?', 0, 1)) }}{{ strtoupper(mb_substr($kayit->usta->soyad ?? '', 0, 1)) }}
                 </div>
                 <div style="flex:1; min-width:0;">
-                    <div style="font-size:0.875rem; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
+                    <div style="font-size:0.875rem; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; color:var(--text-primary);">
                         {{ $kayit->usta->ad_soyad ?? '-' }}
                     </div>
                     <div class="text-muted fs-sm">{{ $kayit->gun_sayisi }} gün</div>
@@ -110,7 +110,7 @@
                 <div class="text-success fw-semibold fs-sm">
                     {{ number_format($kayit->toplam_ucret, 0, ',', '.') }}₺
                 </div>
-            </div>
+            </a>
         @empty
             <div class="text-center text-muted" style="padding:30px 0;">
                 Bu ay devam kaydı yok
@@ -140,12 +140,12 @@
                 @forelse($sonKayitlar as $kayit)
                 <tr>
                     <td>
-                        <div class="d-flex align-center gap-2">
+                        <a href="{{ route('ustalar.show', $kayit->usta_id) }}" class="d-flex align-center gap-2" style="color:inherit; text-decoration:none;">
                             <div class="avatar-circle">
                                 {{ strtoupper(mb_substr($kayit->usta->ad ?? '?', 0, 1)) }}{{ strtoupper(mb_substr($kayit->usta->soyad ?? '', 0, 1)) }}
                             </div>
-                            <span>{{ $kayit->usta->ad_soyad ?? '-' }}</span>
-                        </div>
+                            <span style="color:var(--text-primary); font-weight:600;">{{ $kayit->usta->ad_soyad ?? '-' }}</span>
+                        </a>
                     </td>
                     <td class="text-muted">{{ $kayit->tarih->locale('tr')->isoFormat('D MMMM') }}</td>
                     <td>

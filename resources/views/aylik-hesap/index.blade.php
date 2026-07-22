@@ -158,13 +158,15 @@
 <div class="hesap-card {{ $h['kapandi'] ? 'kapali' : ($h['kalan'] > 0 ? 'odeme-bekliyor' : '') }}">
 
     <div class="hesap-header">
-        <div class="avatar-circle" style="width:48px;height:48px;font-size:1.1rem;">
-            {{ strtoupper(mb_substr($h['usta']->ad, 0, 1)) }}{{ strtoupper(mb_substr($h['usta']->soyad, 0, 1)) }}
-        </div>
-        <div style="flex:1;">
-            <div class="fw-semibold" style="font-size:1.05rem;">{{ $h['usta']->ad_soyad }}</div>
-            <div class="text-muted fs-sm">{{ $h['usta']->uzmanlik ?? 'Genel İşçi' }}</div>
-        </div>
+        <a href="{{ route('ustalar.show', $h['usta']->id) }}" style="display:flex; align-items:center; gap:16px; flex:1; color:inherit; text-decoration:none;">
+            <div class="avatar-circle" style="width:48px;height:48px;font-size:1.1rem;">
+                {{ strtoupper(mb_substr($h['usta']->ad, 0, 1)) }}{{ strtoupper(mb_substr($h['usta']->soyad, 0, 1)) }}
+            </div>
+            <div>
+                <div class="fw-semibold" style="font-size:1.05rem; color:var(--text-primary);">{{ $h['usta']->ad_soyad }}</div>
+                <div class="text-muted fs-sm">{{ $h['usta']->uzmanlik ?? 'Genel İşçi' }}</div>
+            </div>
+        </a>
         @if($h['kapandi'])
             <span class="badge badge-success" style="font-size:0.85rem;">✅ Hesap Kapalı</span>
         @elseif($h['kalan'] <= 0)

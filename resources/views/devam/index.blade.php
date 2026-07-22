@@ -207,15 +207,15 @@
                            onchange="toggleUsta({{ $usta->id }})">
                     <span class="toggle-slider"></span>
                 </label>
-                <div class="usta-info">
+                <a href="{{ route('ustalar.show', $usta->id) }}" target="_blank" class="usta-info" style="color:inherit; text-decoration:none;" title="Profilini Gör">
                     <div class="avatar-circle" style="width:36px;height:36px;font-size:0.8rem;">
                         {{ strtoupper(mb_substr($usta->ad, 0, 1)) }}{{ strtoupper(mb_substr($usta->soyad, 0, 1)) }}
                     </div>
                     <div>
-                        <div class="fw-semibold" style="font-size:0.9rem;">{{ $usta->ad_soyad }}</div>
+                        <div class="fw-semibold" style="font-size:0.9rem; color:var(--text-primary);">{{ $usta->ad_soyad }}</div>
                         <div class="text-muted fs-sm">{{ $usta->uzmanlik ?? 'Genel' }}</div>
                     </div>
-                </div>
+                </a>
                 @if($kayit)
                     <span class="kayitli-badge">✓ Kayıtlı</span>
                 @endif

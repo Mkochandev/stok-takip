@@ -61,14 +61,14 @@
                 @forelse($ustalar as $usta)
                 <tr>
                     <td>
-                        <div class="d-flex align-center gap-2">
+                        <a href="{{ route('ustalar.show', $usta->id) }}" class="d-flex align-center gap-2" style="color:inherit; text-decoration:none;">
                             <div class="avatar-circle">
                                 {{ strtoupper(mb_substr($usta->ad, 0, 1)) }}{{ strtoupper(mb_substr($usta->soyad, 0, 1)) }}
                             </div>
                             <div>
-                                <div class="fw-semibold">{{ $usta->ad_soyad }}</div>
+                                <div class="fw-semibold" style="color:var(--text-primary);">{{ $usta->ad_soyad }}</div>
                             </div>
-                        </div>
+                        </a>
                     </td>
                     <td class="text-muted">{{ $usta->uzmanlik ?? '—' }}</td>
                     <td class="text-muted">
