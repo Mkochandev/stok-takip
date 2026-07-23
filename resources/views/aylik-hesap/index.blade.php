@@ -1,150 +1,160 @@
 @extends('layouts.app')
 
-@section('title', 'Aylık Hesap')
-@section('page-title', '📋 Aylık Hesap Kapatma')
+@section('title', 'Aylık Hesap & Ödeme Yönetimi')
+@section('page-title', 'Aylık Hesap & Ödeme Yönetimi')
 
 @push('styles')
 <style>
-.hesap-card {
-    background: var(--bg-card);
+.payment-card {
+    background: #ffffff;
     border: 1px solid var(--border-color);
     border-radius: var(--radius-lg);
-    padding: 20px;
-    margin-bottom: 12px;
-    transition: border-color var(--transition);
+    padding: 24px;
+    margin-bottom: 20px;
+    box-shadow: var(--shadow-sm);
+    transition: all var(--transition);
 }
-.hesap-card.kapali {
-    opacity: 0.7;
-    border-color: rgba(34,197,94,0.3);
-    background: rgba(34,197,94,0.03);
+.payment-card.kapali {
+    background: #f8fafc;
+    border-color: #e2e8f0;
 }
-.hesap-card.odeme-bekliyor {
-    border-color: rgba(245,158,11,0.4);
-    background: rgba(245,158,11,0.03);
+.payment-card.bekliyor {
+    border-left: 4px solid var(--accent-warning);
 }
-.hesap-header {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    margin-bottom: 16px;
+.payment-card.tamamlandi {
+    border-left: 4px solid var(--accent-primary);
 }
-.hesap-body {
+.progress-bar-bg {
+    width: 100%;
+    height: 10px;
+    background: #f1f5f9;
+    border-radius: var(--radius-full);
+    overflow: hidden;
+    margin: 12px 0 16px;
+}
+.progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent-primary), #34d399);
+    border-radius: var(--radius-full);
+    transition: width 0.4s ease;
+}
+.work-summary-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
     gap: 12px;
-    margin-bottom: 16px;
+    margin-bottom: 20px;
 }
-.hesap-item {
-    background: var(--bg-primary);
-    border-radius: var(--radius-sm);
-    padding: 10px 12px;
-}
-.hesap-item .label { font-size:0.7rem; color:var(--text-muted); margin-bottom:4px; }
-.hesap-item .val { font-size:1rem; font-weight:700; }
-.hesap-footer {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding-top: 12px;
-    border-top: 1px solid var(--border-color);
-}
-.odeme-form {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    flex: 1;
-}
-.odeme-form input[type=number] {
-    width: 140px;
-    padding: 7px 10px;
-    background: var(--bg-primary);
+.work-chip {
+    background: #f8fafc;
     border: 1px solid var(--border-color);
-    border-radius: var(--radius-sm);
-    color: var(--text-primary);
-    font-family: inherit;
-    font-size: 0.9rem;
-    outline: none;
+    border-radius: var(--radius-md);
+    padding: 12px 14px;
 }
-.odeme-form input[type=number]:focus { border-color: var(--accent-primary); }
+.work-chip .chip-label { font-size: 0.75rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; }
+.work-chip .chip-val { font-size: 1.1rem; font-weight: 800; color: var(--text-primary); margin-top: 2px; }
+.work-chip .chip-sub { font-size: 0.75rem; font-weight: 600; color: var(--text-secondary); }
+
+.action-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border-color);
+    flex-wrap: wrap;
+}
+.pay-form {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex: 1;
+    flex-wrap: wrap;
+}
 </style>
 @endpush
 
 @section('content')
 
-{{-- Ay/Yıl Seçici + Arama --}}
-<div class="card" style="margin-bottom:20px;">
-    <form method="GET" action="{{ route('aylik-hesap.index') }}" class="filter-bar">
-        <div>
-            <label class="form-label">Ay</label>
-            <select name="ay" class="form-select" style="width:130px;">
-                @foreach($aylar as $num => $isim)
-                    <option value="{{ $num }}" {{ $ay == $num ? 'selected' : '' }}>{{ $isim }}</option>
-                @endforeach
-            </select>
-        </div>
-        <div>
-            <label class="form-label">Yıl</label>
-            <select name="yil" class="form-select" style="width:100px;">
-                @foreach($yillar as $y)
-                    <option value="{{ $y }}" {{ $yil == $y ? 'selected' : '' }}>{{ $y }}</option>
-                @endforeach
-            </select>
-        </div>
-        <div style="flex:1; min-width:180px;">
-            <label class="form-label">Usta Ara</label>
-            <div style="position:relative;">
-                <span style="position:absolute; left:12px; top:50%; transform:translateY(-50%); pointer-events:none;">🔍</span>
-                <input type="text" name="q" value="{{ $aramaQuery ?? '' }}"
-                       placeholder="Usta adı ara..."
-                       class="form-control" style="padding-left:36px;">
+{{-- Dönem Seçici ve Arama Filtresi --}}
+<div class="card" style="padding:16px 24px; margin-bottom:24px;">
+    <form method="GET" action="{{ route('aylik-hesap.index') }}" style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:16px;">
+        <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
+            <div style="display:flex; align-items:center; gap:8px;">
+                <label style="font-size:0.85rem; font-weight:700; color:var(--text-secondary);">Dönem:</label>
+                <select name="ay" class="form-select" style="width:140px;">
+                    @foreach($aylar as $num => $isim)
+                        <option value="{{ $num }}" {{ $ay == $num ? 'selected' : '' }}>{{ $isim }}</option>
+                    @endforeach
+                </select>
+                <select name="yil" class="form-select" style="width:100px;">
+                    @foreach($yillar as $y)
+                        <option value="{{ $y }}" {{ $yil == $y ? 'selected' : '' }}>{{ $y }}</option>
+                    @endforeach
+                </select>
             </div>
-        </div>
-        <div style="align-self:flex-end;">
-            <button type="submit" class="btn btn-primary">Göster</button>
+
+            <div style="position:relative; width:220px;">
+                <input type="text" name="q" value="{{ $aramaQuery ?? '' }}" placeholder="Usta adı ara..." class="form-control" style="padding-left:36px;">
+                <svg class="svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="position:absolute; left:10px; top:50%; transform:translateY(-50%); color:var(--text-muted); width:16px; height:16px;"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-sm">Filtrele</button>
             @if($aramaQuery)
-                <a href="{{ route('aylik-hesap.index', ['ay' => $ay, 'yil' => $yil]) }}" class="btn btn-secondary btn-sm" style="margin-left:4px;">✕</a>
+                <a href="{{ route('aylik-hesap.index', ['ay' => $ay, 'yil' => $yil]) }}" class="btn btn-secondary btn-sm">Temizle</a>
             @endif
         </div>
-        <div class="filter-period" style="margin-left:auto; align-self:flex-end; font-size:0.85rem; color:var(--text-muted);">
-            {{ $aylar[$ay] ?? '' }} {{ $yil }} dönemi
+
+        <div style="font-size:0.85rem; font-weight:700; color:var(--text-muted);">
+            {{ $aylar[$ay] ?? '' }} {{ $yil }} Hesap Dönemi
         </div>
     </form>
 </div>
 
-
-{{-- Özet --}}
+{{-- Genel Dönem Özet Kartları --}}
 @php
     $toplamHakedis = $hesaplar->sum('toplam_hakedis');
     $toplamOdenen  = $hesaplar->sum(fn($h) => $h['odeme'] ? $h['odeme']->odenen_tutar : 0);
     $toplamKalan   = $hesaplar->sum('kalan');
+    $odemeYuzdesi  = $toplamHakedis > 0 ? round(($toplamOdenen / $toplamHakedis) * 100) : 100;
 @endphp
 
-<div class="stats-grid" style="margin-bottom:20px;">
+<div class="stats-grid" style="margin-bottom:24px;">
     <div class="stat-card">
-        <div class="stat-icon blue">📋</div>
+        <div class="stat-icon dark">
+            <svg class="svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+        </div>
         <div>
             <div class="stat-value">{{ $hesaplar->count() }}</div>
             <div class="stat-label">Çalışan Usta</div>
         </div>
     </div>
+
     <div class="stat-card">
-        <div class="stat-icon purple">💰</div>
+        <div class="stat-icon blue">
+            <svg class="svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        </div>
         <div>
             <div class="stat-value">{{ number_format($toplamHakedis, 0, ',', '.') }}₺</div>
-            <div class="stat-label">Toplam Hakedis</div>
+            <div class="stat-label">Toplam Hakediş</div>
         </div>
     </div>
+
     <div class="stat-card">
-        <div class="stat-icon green">✅</div>
+        <div class="stat-icon mint">
+            <svg class="svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
         <div>
-            <div class="stat-value">{{ number_format($toplamOdenen, 0, ',', '.') }}₺</div>
-            <div class="stat-label">Ödenen</div>
+            <div class="stat-value" style="color:var(--accent-primary);">{{ number_format($toplamOdenen, 0, ',', '.') }}₺</div>
+            <div class="stat-label">Toplam Ödenen (%{{ $odemeYuzdesi }})</div>
         </div>
     </div>
+
     <div class="stat-card">
-        <div class="stat-icon {{ $toplamKalan > 0 ? 'red' : 'green' }}">⏳</div>
+        <div class="stat-icon {{ $toplamKalan > 0 ? '' : 'mint' }}" style="{{ $toplamKalan > 0 ? 'background:#fef2f2; color:#ef4444; border-color:#fee2e2;' : '' }}">
+            <svg class="svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </div>
         <div>
-            <div class="stat-value {{ $toplamKalan > 0 ? 'text-danger' : 'text-success' }}">
+            <div class="stat-value" style="color: {{ $toplamKalan > 0 ? 'var(--accent-danger)' : 'var(--accent-primary)' }};">
                 {{ number_format($toplamKalan, 0, ',', '.') }}₺
             </div>
             <div class="stat-label">Kalan Borç</div>
@@ -152,99 +162,130 @@
     </div>
 </div>
 
-{{-- Usta Hesap Kartları --}}
+{{-- Usta Ödeme Kartları --}}
 @forelse($hesaplar as $hesap)
-@php $h = $hesap; @endphp
-<div class="hesap-card {{ $h['kapandi'] ? 'kapali' : ($h['kalan'] > 0 ? 'odeme-bekliyor' : '') }}">
+@php 
+    $h = $hesap; 
+    $ustaYuzde = $h['toplam_hakedis'] > 0 
+        ? round((($h['odeme'] ? $h['odeme']->odenen_tutar : 0) / $h['toplam_hakedis']) * 100) 
+        : 100;
+@endphp
+<div class="payment-card {{ $h['kapandi'] ? 'kapali' : ($h['kalan'] > 0 ? 'bekliyor' : 'tamamlandi') }}">
 
-    <div class="hesap-header">
-        <a href="{{ route('ustalar.show', $h['usta']->id) }}" style="display:flex; align-items:center; gap:16px; flex:1; color:inherit; text-decoration:none;">
-            <div class="avatar-circle" style="width:48px;height:48px;font-size:1.1rem;">
+    <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:16px;">
+        <div style="display:flex; align-items:center; gap:14px;">
+            <div class="avatar" style="width:46px; height:46px; background:var(--accent-dark); color:#ffffff; font-size:1.1rem; font-weight:800; border-radius:50%; display:flex; align-items:center; justify-content:center;">
                 {{ strtoupper(mb_substr($h['usta']->ad, 0, 1)) }}{{ strtoupper(mb_substr($h['usta']->soyad, 0, 1)) }}
             </div>
             <div>
-                <div class="fw-semibold" style="font-size:1.05rem; color:var(--text-primary);">{{ $h['usta']->ad_soyad }}</div>
-                <div class="text-muted fs-sm">{{ $h['usta']->uzmanlik ?? 'Genel İşçi' }}</div>
+                <a href="{{ route('ustalar.show', $h['usta']->id) }}" style="font-size:1.1rem; font-weight:800; color:var(--text-primary);">
+                    {{ $h['usta']->ad_soyad }}
+                </a>
+                <div style="font-size:0.8rem; font-weight:600; color:var(--text-muted);">
+                    {{ $h['usta']->uzmanlik ?? 'Genel Usta' }}
+                </div>
             </div>
-        </a>
-        @if($h['kapandi'])
-            <span class="badge badge-success" style="font-size:0.85rem;">✅ Hesap Kapalı</span>
-        @elseif($h['kalan'] <= 0)
-            <span class="badge badge-info">Tam Ödendi</span>
-        @else
-            <span class="badge badge-warning">⏳ {{ number_format($h['kalan'], 0, ',', '.') }}₺ Kalan</span>
-        @endif
-        <a href="{{ route('ustalar.show', $h['usta']->id) }}" class="btn btn-secondary btn-sm">👁️</a>
-    </div>
+        </div>
 
-    {{-- Çalışma Dökümü --}}
-    <div class="hesap-body">
-        <div class="hesap-item">
-            <div class="label">✅ Tam Gün</div>
-            <div class="val">{{ $h['tam_gun'] }} gün</div>
-            <div class="text-muted fs-sm">{{ number_format($h['tam_gun'] * $h['usta']->gunluk_ucret, 0, ',', '.') }}₺</div>
-        </div>
-        <div class="hesap-item">
-            <div class="label">🌗 Yarım Gün</div>
-            <div class="val">{{ $h['yarim_gun'] }} gün</div>
-            <div class="text-muted fs-sm">{{ number_format($h['yarim_gun'] * ($h['usta']->gunluk_ucret / 2), 0, ',', '.') }}₺</div>
-        </div>
-        <div class="hesap-item">
-            <div class="label">⏰ Mesai</div>
-            <div class="val">{{ $h['mesai_saati'] }} saat</div>
-            <div class="text-muted fs-sm">{{ number_format($h['mesai_saati'] * $h['usta']->mesai_saatlik_ucret, 0, ',', '.') }}₺</div>
-        </div>
-        <div class="hesap-item" style="border: 1px solid rgba(79,110,247,0.3); background: rgba(79,110,247,0.05);">
-            <div class="label">💰 Toplam Hakedis</div>
-            <div class="val text-primary" style="font-size:1.2rem;">{{ number_format($h['toplam_hakedis'], 0, ',', '.') }}₺</div>
-            @if($h['odeme'])
-                <div class="text-muted fs-sm">Ödenen: {{ number_format($h['odeme']->odenen_tutar, 0, ',', '.') }}₺</div>
+        <div>
+            @if($h['kapandi'])
+                <span class="badge badge-gray">Hesap Kapatıldı</span>
+            @elseif($h['kalan'] <= 0)
+                <span class="badge badge-mint">✓ Tam Ödendi (%100)</span>
+            @else
+                <span class="badge badge-warning">Ödeme Bekliyor (%{{ $ustaYuzde }} Ödendi)</span>
             @endif
         </div>
     </div>
 
-    {{-- Ödeme Formu --}}
+    {{-- İlerleme Çubuğu --}}
+    <div class="progress-bar-bg">
+        <div class="progress-bar-fill" style="width: {{ max($ustaYuzde, 2) }}%;"></div>
+    </div>
+
+    {{-- Çalışma Detay Çipleri --}}
+    <div class="work-summary-grid">
+        <div class="work-chip">
+            <div class="chip-label">Tam Gün</div>
+            <div class="chip-val">{{ $h['tam_gun'] }} gün</div>
+            <div class="chip-sub">{{ number_format($h['tam_gun'] * $h['usta']->gunluk_ucret, 0, ',', '.') }}₺</div>
+        </div>
+        <div class="work-chip">
+            <div class="chip-label">Yarım Gün</div>
+            <div class="chip-val">{{ $h['yarim_gun'] }} gün</div>
+            <div class="chip-sub">{{ number_format($h['yarim_gun'] * ($h['usta']->gunluk_ucret / 2), 0, ',', '.') }}₺</div>
+        </div>
+        <div class="work-chip">
+            <div class="chip-label">Mesai Saati</div>
+            <div class="chip-val">{{ $h['mesai_saati'] }} saat</div>
+            <div class="chip-sub">{{ number_format($h['mesai_saati'] * $h['usta']->mesai_saatlik_ucret, 0, ',', '.') }}₺</div>
+        </div>
+        <div class="work-chip" style="background:var(--accent-light); border-color:rgba(16, 185, 129, 0.2);">
+            <div class="chip-label" style="color:var(--accent-primary);">Toplam Hakediş</div>
+            <div class="chip-val" style="color:var(--accent-primary);">{{ number_format($h['toplam_hakedis'], 0, ',', '.') }}₺</div>
+            @if($h['odeme'])
+                <div class="chip-sub" style="color:#047857;">Ödenen: {{ number_format($h['odeme']->odenen_tutar, 0, ',', '.') }}₺</div>
+            @else
+                <div class="chip-sub" style="color:var(--text-muted);">Ödeme Yapılmadı</div>
+            @endif
+        </div>
+    </div>
+
+    {{-- Ödeme Aksiyon Alanı --}}
     @if(!$h['kapandi'])
-    <div class="hesap-footer">
-        <form action="{{ route('aylik-hesap.odeme') }}" method="POST" class="odeme-form">
+    <div class="action-row">
+        <form action="{{ route('aylik-hesap.odeme') }}" method="POST" class="pay-form">
             @csrf
             <input type="hidden" name="usta_id" value="{{ $h['usta']->id }}">
             <input type="hidden" name="ay" value="{{ $ay }}">
             <input type="hidden" name="yil" value="{{ $yil }}">
-            <input type="number" name="odenen_tutar" placeholder="Ödeme tutarı ₺"
-                   min="0" step="0.01" required
-                   value="{{ $h['kalan'] > 0 ? number_format($h['kalan'], 2, '.', '') : '' }}">
-            <select name="odeme_yontemi" class="form-select" style="width:120px;">
-                <option value="nakit">💵 Nakit</option>
-                <option value="havale">🏦 Havale</option>
-                <option value="çek">📄 Çek</option>
-            </select>
-            <button type="submit" class="btn btn-success btn-sm">💸 Ödeme Yap</button>
+            
+            <div style="display:flex; align-items:center; gap:8px;">
+                <label style="font-size:0.8rem; font-weight:700; color:var(--text-secondary);">Tutar:</label>
+                <input type="number" name="odenen_tutar" placeholder="0.00 ₺" min="0" step="0.01" required
+                       value="{{ $h['kalan'] > 0 ? number_format($h['kalan'], 2, '.', '') : '' }}"
+                       class="form-control" style="width:140px; padding:6px 12px;">
+            </div>
+
+            <div style="display:flex; align-items:center; gap:8px;">
+                <label style="font-size:0.8rem; font-weight:700; color:var(--text-secondary);">Yöntem:</label>
+                <select name="odeme_yontemi" class="form-select" style="width:130px; padding:6px 12px;">
+                    <option value="nakit">Nakit</option>
+                    <option value="havale">Banka / Havale</option>
+                    <option value="çek">Çek</option>
+                </select>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-sm" style="padding:8px 16px;">
+                Ödeme Kaydet
+            </button>
         </form>
 
-        <form action="{{ route('aylik-hesap.kapat') }}" method="POST"
-              onsubmit="return confirm('Hesabı kapatmak istediğinizden emin misiniz?')">
+        <form action="{{ route('aylik-hesap.kapat') }}" method="POST" onsubmit="return confirm('Hesabı kapatmak istediğinizden emin misiniz?');">
             @csrf
             <input type="hidden" name="usta_id" value="{{ $h['usta']->id }}">
             <input type="hidden" name="ay" value="{{ $ay }}">
             <input type="hidden" name="yil" value="{{ $yil }}">
-            <button type="submit" class="btn btn-secondary btn-sm">🔒 Hesabı Kapat</button>
+            <button type="submit" class="btn btn-dark btn-sm">
+                Hesabı Kapat
+            </button>
         </form>
     </div>
     @else
-    <div class="hesap-footer" style="justify-content:flex-end;">
-        <span class="text-muted fs-sm">
+    <div class="action-row" style="justify-content:flex-end;">
+        <span style="font-size:0.85rem; font-weight:600; color:var(--text-muted);">
             Kapatıldı: {{ $h['odeme']?->odeme_tarihi?->locale('tr')->isoFormat('D MMMM YYYY') ?? '—' }}
         </span>
     </div>
     @endif
 </div>
 @empty
-<div class="card text-center" style="padding:60px;">
-    <div style="font-size:3rem;">📋</div>
-    <div class="fw-semibold mt-3" style="font-size:1.1rem;">Bu ay çalışan usta yok</div>
-    <div class="text-muted mt-2">Devam kaydı girilmemiş. Önce devam takibinden kayıt ekleyin.</div>
-    <a href="{{ route('devam.index') }}" class="btn btn-primary mt-3">📅 Devam Takibine Git</a>
+<div class="card text-center" style="padding:60px 24px;">
+    <div style="font-size:1.2rem; font-weight:800; color:var(--text-primary);">Bu ay çalışan usta bulunmuyor</div>
+    <p style="color:var(--text-muted); font-size:0.9rem; margin-top:6px;">Seçilen dönem için devam kaydı girilmemiş.</p>
+    <div style="margin-top:16px;">
+        <a href="{{ route('devam.index') }}" class="btn btn-primary">Devam Takibine Git →</a>
+    </div>
 </div>
 @endforelse
 

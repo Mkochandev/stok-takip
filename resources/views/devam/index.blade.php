@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title', 'Devam Takibi')
-@section('page-title', '📅 Devam Takibi')
+@section('page-title', 'Devam Takibi')
 
 @push('styles')
 <style>
