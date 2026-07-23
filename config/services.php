@@ -35,4 +35,15 @@ return [
         ],
     ],
 
+    'cloudflare' => [
+        'token' => env('CLOUDFLARE_API_TOKEN'),
+        'zone_id' => env('CLOUDFLARE_ZONE_ID'),
+        'domain' => env('CLOUDFLARE_DOMAIN', 'gaziustam.com'),
+    ],
+
+    'digitalocean' => [
+        'token' => env('DIGITALOCEAN_API_TOKEN'),
+        'droplet_id' => env('DIGITALOCEAN_DROPLET_ID'),
+    ],
+
 ];

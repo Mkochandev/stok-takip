@@ -33,56 +33,62 @@
         </div>
 
         <nav class="sidebar-nav">
-            <div class="nav-section">Ana Menü</div>
-
-            <a href="{{ route('dashboard') }}"
-               class="nav-item {{ request()->routeIs('dashboard') ? 'active' : '' }}">
-                <span class="nav-icon">📊</span>
-                <span>Dashboard</span>
-            </a>
-
-            <a href="{{ route('ustalar.index') }}"
-               class="nav-item {{ request()->routeIs('ustalar.*') ? 'active' : '' }}">
-                <span class="nav-icon">👷</span>
-                <span>Ustalar</span>
-            </a>
-
-            <a href="{{ route('isler.index') }}"
-               class="nav-item {{ request()->routeIs('isler.*') ? 'active' : '' }}">
-                <span class="nav-icon">🏢</span>
-                <span>İşler</span>
-            </a>
-
-            <div class="nav-section">Takip</div>
-
-            <a href="{{ route('devam.index') }}"
-               class="nav-item {{ request()->routeIs('devam.*') ? 'active' : '' }}">
-                <span class="nav-icon">📅</span>
-                <span>Devam Takibi</span>
-            </a>
-
-            <a href="{{ route('aylik-hesap.index') }}"
-               class="nav-item {{ request()->routeIs('aylik-hesap.*') ? 'active' : '' }}">
-                <span class="nav-icon">💰</span>
-                <span>Aylık Hesap</span>
-            </a>
-
-            <div class="nav-section">Finans</div>
-
-            <a href="{{ route('gelir-gider.index') }}"
-               class="nav-item {{ request()->routeIs('gelir-gider.*') ? 'active' : '' }}">
-                <span class="nav-icon">📈</span>
-                <span>Gelir / Gider</span>
-            </a>
-
             @if(Auth::user()->isAdmin())
-                <div class="nav-section" style="color: #a5b4fc;">Sistem Yönetimi</div>
+                <div class="nav-section" style="color: #a5b4fc;">👑 Admin Yönetim Paneli</div>
+
+                <a href="{{ route('admin.dashboard') }}"
+                   class="nav-item {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}"
+                   style="background: rgba(99, 102, 241, 0.12); border-left: 3px solid #6366f1;">
+                    <span class="nav-icon">📊</span>
+                    <span>Admin Panel</span>
+                </a>
 
                 <a href="{{ route('admin.users.index') }}"
-                   class="nav-item {{ request()->routeIs('admin.users.*') ? 'active' : '' }}"
-                   style="background: rgba(99, 102, 241, 0.1); border-left: 3px solid #6366f1;">
-                    <span class="nav-icon">👑</span>
-                    <span>Üye Yönetimi</span>
+                   class="nav-item {{ request()->routeIs('admin.users.*') ? 'active' : '' }}">
+                    <span class="nav-icon">👥</span>
+                    <span>Üye & Abonelik Yönetimi</span>
+                </a>
+            @else
+                <div class="nav-section">Ana Menü</div>
+
+                <a href="{{ route('dashboard') }}"
+                   class="nav-item {{ request()->routeIs('dashboard') ? 'active' : '' }}">
+                    <span class="nav-icon">📊</span>
+                    <span>Dashboard</span>
+                </a>
+
+                <a href="{{ route('ustalar.index') }}"
+                   class="nav-item {{ request()->routeIs('ustalar.*') ? 'active' : '' }}">
+                    <span class="nav-icon">👷</span>
+                    <span>Ustalar</span>
+                </a>
+
+                <a href="{{ route('isler.index') }}"
+                   class="nav-item {{ request()->routeIs('isler.*') ? 'active' : '' }}">
+                    <span class="nav-icon">🏢</span>
+                    <span>İşler</span>
+                </a>
+
+                <div class="nav-section">Takip</div>
+
+                <a href="{{ route('devam.index') }}"
+                   class="nav-item {{ request()->routeIs('devam.*') ? 'active' : '' }}">
+                    <span class="nav-icon">📅</span>
+                    <span>Devam Takibi</span>
+                </a>
+
+                <a href="{{ route('aylik-hesap.index') }}"
+                   class="nav-item {{ request()->routeIs('aylik-hesap.*') ? 'active' : '' }}">
+                    <span class="nav-icon">💰</span>
+                    <span>Aylık Hesap</span>
+                </a>
+
+                <div class="nav-section">Finans</div>
+
+                <a href="{{ route('gelir-gider.index') }}"
+                   class="nav-item {{ request()->routeIs('gelir-gider.*') ? 'active' : '' }}">
+                    <span class="nav-icon">📈</span>
+                    <span>Gelir / Gider</span>
                 </a>
             @endif
 
@@ -172,30 +178,45 @@
 
 {{-- ===== MOBILE BOTTOM NAVIGATION BAR ===== --}}
 <nav class="mobile-bottom-nav">
-    <a href="{{ route('dashboard') }}" class="bottom-nav-item {{ request()->routeIs('dashboard') ? 'active' : '' }}">
-        <span class="bottom-nav-icon">📊</span>
-        <span class="bottom-nav-label">Dashboard</span>
-    </a>
-    <a href="{{ route('ustalar.index') }}" class="bottom-nav-item {{ request()->routeIs('ustalar.*') ? 'active' : '' }}">
-        <span class="bottom-nav-icon">👷</span>
-        <span class="bottom-nav-label">Ustalar</span>
-    </a>
-    <a href="{{ route('isler.index') }}" class="bottom-nav-item {{ request()->routeIs('isler.*') ? 'active' : '' }}">
-        <span class="bottom-nav-icon">🏢</span>
-        <span class="bottom-nav-label">İşler</span>
-    </a>
-    <a href="{{ route('devam.index') }}" class="bottom-nav-item {{ request()->routeIs('devam.*') ? 'active' : '' }}">
-        <span class="bottom-nav-icon">📅</span>
-        <span class="bottom-nav-label">Devam</span>
-    </a>
-    <a href="{{ route('aylik-hesap.index') }}" class="bottom-nav-item {{ request()->routeIs('aylik-hesap.*') ? 'active' : '' }}">
-        <span class="bottom-nav-icon">💰</span>
-        <span class="bottom-nav-label">Hesap</span>
-    </a>
-    <a href="{{ route('gelir-gider.index') }}" class="bottom-nav-item {{ request()->routeIs('gelir-gider.*') ? 'active' : '' }}">
-        <span class="bottom-nav-icon">📈</span>
-        <span class="bottom-nav-label">Finans</span>
-    </a>
+    @if(Auth::user()->isAdmin())
+        <a href="{{ route('admin.dashboard') }}" class="bottom-nav-item {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
+            <span class="bottom-nav-icon">📊</span>
+            <span class="bottom-nav-label">Admin Panel</span>
+        </a>
+        <a href="{{ route('admin.users.index') }}" class="bottom-nav-item {{ request()->routeIs('admin.users.*') ? 'active' : '' }}">
+            <span class="bottom-nav-icon">👥</span>
+            <span class="bottom-nav-label">Üyeler</span>
+        </a>
+        <a href="{{ route('profile.edit') }}" class="bottom-nav-item {{ request()->routeIs('profile.*') ? 'active' : '' }}">
+            <span class="bottom-nav-icon">👤</span>
+            <span class="bottom-nav-label">Profilim</span>
+        </a>
+    @else
+        <a href="{{ route('dashboard') }}" class="bottom-nav-item {{ request()->routeIs('dashboard') ? 'active' : '' }}">
+            <span class="bottom-nav-icon">📊</span>
+            <span class="bottom-nav-label">Dashboard</span>
+        </a>
+        <a href="{{ route('ustalar.index') }}" class="bottom-nav-item {{ request()->routeIs('ustalar.*') ? 'active' : '' }}">
+            <span class="bottom-nav-icon">👷</span>
+            <span class="bottom-nav-label">Ustalar</span>
+        </a>
+        <a href="{{ route('isler.index') }}" class="bottom-nav-item {{ request()->routeIs('isler.*') ? 'active' : '' }}">
+            <span class="bottom-nav-icon">🏢</span>
+            <span class="bottom-nav-label">İşler</span>
+        </a>
+        <a href="{{ route('devam.index') }}" class="bottom-nav-item {{ request()->routeIs('devam.*') ? 'active' : '' }}">
+            <span class="bottom-nav-icon">📅</span>
+            <span class="bottom-nav-label">Devam</span>
+        </a>
+        <a href="{{ route('aylik-hesap.index') }}" class="bottom-nav-item {{ request()->routeIs('aylik-hesap.*') ? 'active' : '' }}">
+            <span class="bottom-nav-icon">💰</span>
+            <span class="bottom-nav-label">Hesap</span>
+        </a>
+        <a href="{{ route('gelir-gider.index') }}" class="bottom-nav-item {{ request()->routeIs('gelir-gider.*') ? 'active' : '' }}">
+            <span class="bottom-nav-icon">📈</span>
+            <span class="bottom-nav-label">Finans</span>
+        </a>
+    @endif
 </nav>
 
 <script>

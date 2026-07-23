@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\AylikHesapController;
 use App\Http\Controllers\DashboardController;
@@ -25,6 +26,10 @@ Route::get('/subscription-expired', function () {
 
 // 👑 ANA ADMIN ROTALARI (Sadece Admin yetkisi olanlar girebilir)
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+    // Admin Ana Panel Dashboard
+    Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
+
+    // Üye Yönetimi
     Route::get('/users', [AdminUserController::class, 'index'])->name('users.index');
     Route::get('/users/create', [AdminUserController::class, 'create'])->name('users.create');
     Route::post('/users', [AdminUserController::class, 'store'])->name('users.store');
@@ -33,6 +38,14 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::post('/users/{user}/extend', [AdminUserController::class, 'extend'])->name('users.extend');
     Route::get('/users/{user}/backup', [AdminUserController::class, 'backup'])->name('users.backup');
     Route::delete('/users/{user}', [AdminUserController::class, 'destroy'])->name('users.destroy');
+
+    // Günlük Sistem Yedekleri
+    Route::post('/backups/create', [AdminDashboardController::class, 'createBackup'])->name('backups.create');
+    Route::get('/backups/download/{filename}', [AdminDashboardController::class, 'downloadBackup'])->name('backups.download');
+    Route::delete('/backups/delete/{filename}', [AdminDashboardController::class, 'deleteBackup'])->name('backups.delete');
+
+    // Sunucu ve Domain (Cloudflare & DigitalOcean) Ayarları
+    Route::post('/settings/infrastructure', [AdminDashboardController::class, 'updateInfrastructureSettings'])->name('settings.infrastructure');
 });
 
 // Korumalı Kullanıcı Rotaları (Giriş yapılmış & verified & aktif abonelik)

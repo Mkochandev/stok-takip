@@ -13,6 +13,10 @@ class DashboardController extends Controller
 {
     public function index()
     {
+        if (auth()->check() && auth()->user()->isAdmin()) {
+            return redirect()->route('admin.dashboard');
+        }
+
         $buAy = now()->month;
         $buYil = now()->year;
 
