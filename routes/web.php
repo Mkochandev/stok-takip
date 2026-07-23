@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\AylikHesapController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DevamController;
@@ -17,13 +18,30 @@ Route::get('/', function () {
     return redirect()->route('dashboard');
 });
 
-// Korumalı rotalar
-Route::middleware(['auth', 'verified'])->group(function () {
+// Üyelik Süresi Doldu Sayfası
+Route::get('/subscription-expired', function () {
+    return view('errors.subscription-expired');
+})->middleware(['auth'])->name('subscription.expired');
+
+// 👑 ANA ADMIN ROTALARI (Sadece Admin yetkisi olanlar girebilir)
+Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/users', [AdminUserController::class, 'index'])->name('users.index');
+    Route::get('/users/create', [AdminUserController::class, 'create'])->name('users.create');
+    Route::post('/users', [AdminUserController::class, 'store'])->name('users.store');
+    Route::get('/users/{user}/edit', [AdminUserController::class, 'edit'])->name('users.edit');
+    Route::put('/users/{user}', [AdminUserController::class, 'update'])->name('users.update');
+    Route::post('/users/{user}/extend', [AdminUserController::class, 'extend'])->name('users.extend');
+    Route::get('/users/{user}/backup', [AdminUserController::class, 'backup'])->name('users.backup');
+    Route::delete('/users/{user}', [AdminUserController::class, 'destroy'])->name('users.destroy');
+});
+
+// Korumalı Kullanıcı Rotaları (Giriş yapılmış & verified & aktif abonelik)
+Route::middleware(['auth', 'verified', 'check.subscription'])->group(function () {
 
     // Dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-    // Profil (Breeze)
+    // Profil (Breeze + Abonelik bilgisi)
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');

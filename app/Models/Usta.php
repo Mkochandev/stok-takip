@@ -5,11 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
+use App\Traits\BelongsToUser;
+
 class Usta extends Model
 {
+    use BelongsToUser;
+
     protected $table = 'ustalar';
 
     protected $fillable = [
+        'user_id',
         'ad',
         'soyad',
         'telefon',

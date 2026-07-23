@@ -74,27 +74,54 @@
                 <span class="nav-icon">📈</span>
                 <span>Gelir / Gider</span>
             </a>
+
+            @if(Auth::user()->isAdmin())
+                <div class="nav-section" style="color: #a5b4fc;">Sistem Yönetimi</div>
+
+                <a href="{{ route('admin.users.index') }}"
+                   class="nav-item {{ request()->routeIs('admin.users.*') ? 'active' : '' }}"
+                   style="background: rgba(99, 102, 241, 0.1); border-left: 3px solid #6366f1;">
+                    <span class="nav-icon">👑</span>
+                    <span>Üye Yönetimi</span>
+                </a>
+            @endif
+
+            <div class="nav-section">Hesabım</div>
+
+            <a href="{{ route('profile.edit') }}"
+               class="nav-item {{ request()->routeIs('profile.*') ? 'active' : '' }}">
+                <span class="nav-icon">👤</span>
+                <span>Profilim & Abonelik</span>
+            </a>
         </nav>
 
         <div class="sidebar-footer">
-            <div class="user-info">
-                <div class="avatar">
+            <a href="{{ route('profile.edit') }}" class="user-info" style="text-decoration:none; color:inherit; display:flex; align-items:center;">
+                <div class="avatar" style="background: linear-gradient(135deg, #6366f1, #4f46e5); color:#fff;">
                     {{ strtoupper(mb_substr(Auth::user()->name ?? 'U', 0, 1)) }}
                 </div>
                 <div style="flex:1; min-width:0;">
-                    <div class="user-name">{{ Auth::user()->name }}</div>
-                    <div class="user-role">{{ Auth::user()->email }}</div>
+                    <div class="user-name" style="font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">{{ Auth::user()->name }}</div>
+                    <div class="user-role" style="font-size:0.75rem; color:var(--text-muted);">
+                        @if(Auth::user()->isAdmin())
+                            👑 Admin (Süresiz)
+                        @elseif(Auth::user()->expires_at)
+                            ⏱️ {{ Auth::user()->remainingDays() }} Gün Kaldı
+                        @else
+                            ∞ Süresiz
+                        @endif
+                    </div>
                 </div>
-                <form method="POST" action="{{ route('logout') }}" style="margin:0;">
-                    @csrf
-                    <button type="submit" title="Çıkış Yap"
-                            style="background:none;border:none;cursor:pointer;color:var(--text-muted);font-size:1.1rem;padding:4px;transition:color 0.2s;"
-                            onmouseover="this.style.color='var(--accent-danger)'"
-                            onmouseout="this.style.color='var(--text-muted)'">
-                        🚪
-                    </button>
-                </form>
-            </div>
+            </a>
+            <form method="POST" action="{{ route('logout') }}" style="margin:0; padding-left:6px;">
+                @csrf
+                <button type="submit" title="Çıkış Yap"
+                        style="background:none;border:none;cursor:pointer;color:var(--text-muted);font-size:1.1rem;padding:4px;transition:color 0.2s;"
+                        onmouseover="this.style.color='var(--accent-danger)'"
+                        onmouseout="this.style.color='var(--text-muted)'">
+                    🚪
+                </button>
+            </form>
         </div>
     </aside>
 

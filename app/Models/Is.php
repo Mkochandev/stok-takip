@@ -5,11 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
+use App\Traits\BelongsToUser;
+
 class Is extends Model
 {
+    use BelongsToUser;
+
     protected $table = 'isler';
 
     protected $fillable = [
+        'user_id',
         'is_adi',
         'musteri_adi',
         'isveren_telefon',

@@ -5,11 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+use App\Traits\BelongsToUser;
+
 class Odeme extends Model
 {
+    use BelongsToUser;
+
     protected $table = 'odemeler';
 
     protected $fillable = [
+        'user_id',
         'usta_id',
         'ay',
         'yil',
