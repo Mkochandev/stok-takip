@@ -11,6 +11,7 @@
 
     /* Accent & Brand Colors */
     --accent-primary:   #10b981; /* Mint / Emerald Green */
+    --accent-secondary: #059669;
     --accent-hover:     #059669;
     --accent-light:     #ecfdf5;
     --accent-dark:      #0f172a; /* Slate 900 */

@@ -63,14 +63,14 @@
 
         .login-hero-icon {
             width: 100px; height: 100px;
-            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            background: linear-gradient(135deg, #10b981, #059669);
             border-radius: 24px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 3rem;
             margin: 0 auto 28px;
-            box-shadow: 0 20px 60px rgba(79,110,247,0.3);
+            box-shadow: 0 20px 60px rgba(16, 185, 129, 0.3);
             animation: float 3s ease-in-out infinite;
         }
 
@@ -132,7 +132,8 @@
         /* Sağ panel - Login formu */
         .login-right {
             width: 480px;
-            background: var(--bg-secondary);
+            min-height: 100vh;
+            background: #ffffff;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -159,21 +160,22 @@
 
         .login-form-header .brand-icon {
             width: 44px; height: 44px;
-            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            background: linear-gradient(135deg, #10b981, #059669);
             border-radius: 10px;
             display: flex; align-items: center; justify-content: center;
             font-size: 1.3rem;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
         }
 
         .login-form-header .brand-name {
             font-size: 1.2rem;
-            font-weight: 700;
+            font-weight: 800;
             color: var(--text-primary);
         }
 
         .login-form-header h1 {
             font-size: 1.75rem;
-            font-weight: 700;
+            font-weight: 800;
             color: var(--text-primary);
             margin-bottom: 6px;
         }
@@ -191,7 +193,7 @@
         .login-input-group label {
             display: block;
             font-size: 0.82rem;
-            font-weight: 600;
+            font-weight: 700;
             color: var(--text-secondary);
             margin-bottom: 8px;
             letter-spacing: 0.02em;
@@ -214,19 +216,20 @@
         .login-input-group input {
             width: 100%;
             padding: 12px 14px 12px 42px;
-            background: var(--bg-primary);
+            background: #ffffff;
             border: 1.5px solid var(--border-color);
             border-radius: 10px;
             color: var(--text-primary);
             font-family: inherit;
             font-size: 0.9rem;
+            font-weight: 500;
             transition: border-color 0.2s, box-shadow 0.2s;
             outline: none;
         }
 
         .login-input-group input:focus {
-            border-color: var(--accent-primary);
-            box-shadow: 0 0 0 3px rgba(79,110,247,0.15);
+            border-color: #10b981;
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15);
         }
 
         .login-input-group input::placeholder {
@@ -235,7 +238,7 @@
 
         .login-input-group .error-msg {
             font-size: 0.78rem;
-            color: var(--accent-danger);
+            color: #ef4444;
             margin-top: 6px;
             display: flex;
             align-items: center;
@@ -244,7 +247,7 @@
 
         /* Input with error border */
         .login-input-group.has-error input {
-            border-color: var(--accent-danger);
+            border-color: #ef4444;
         }
 
         .login-options {
@@ -264,48 +267,51 @@
 
         .remember-me input[type="checkbox"] {
             width: 16px; height: 16px;
-            accent-color: var(--accent-primary);
+            accent-color: #10b981;
             cursor: pointer;
         }
 
         .remember-me span {
             font-size: 0.85rem;
             color: var(--text-secondary);
+            font-weight: 600;
         }
 
         .forgot-link {
             font-size: 0.85rem;
-            color: var(--accent-primary);
+            color: #059669;
+            font-weight: 600;
             text-decoration: none;
             transition: opacity 0.2s;
         }
 
         .forgot-link:hover {
             opacity: 0.8;
-            color: var(--accent-primary);
+            color: #047857;
         }
 
         .btn-login {
             width: 100%;
             padding: 13px;
-            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
             color: white;
             border: none;
             border-radius: 10px;
             font-size: 0.95rem;
-            font-weight: 600;
+            font-weight: 700;
             font-family: inherit;
             cursor: pointer;
             transition: all 0.2s;
             position: relative;
             overflow: hidden;
             letter-spacing: 0.02em;
+            box-shadow: 0 4px 14px rgba(16, 185, 129, 0.3);
         }
 
         .btn-login:hover {
-            opacity: 0.92;
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+            box-shadow: 0 8px 22px rgba(16, 185, 129, 0.4);
             transform: translateY(-1px);
-            box-shadow: 0 8px 25px rgba(79,110,247,0.35);
         }
 
         .btn-login:active {

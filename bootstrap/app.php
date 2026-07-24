@@ -11,6 +11,9 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
+        $middleware->validateCsrfTokens(except: [
+            'logout',
+        ]);
         $middleware->alias([
             'admin'              => \App\Http\Middleware\IsAdmin::class,
             'check.subscription' => \App\Http\Middleware\CheckSubscription::class,
