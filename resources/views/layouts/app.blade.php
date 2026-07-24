@@ -292,6 +292,19 @@
                 </svg>
                 <span class="bottom-nav-label">Üyeler</span>
             </a>
+            <a href="{{ route('admin.requests.index') }}"
+                class="bottom-nav-item {{ request()->routeIs('admin.requests.*') ? 'active' : '' }}" style="position: relative;">
+                <svg class="svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                </svg>
+                <span class="bottom-nav-label">Talepler</span>
+                @php
+                    $pendingLeadCount = \App\Models\ContactRequest::where('status', 'yeni')->count();
+                @endphp
+                @if($pendingLeadCount > 0)
+                    <span style="position: absolute; top: 2px; right: 8px; background: #f59e0b; color: #fff; font-weight: 700; padding: 1px 5px; border-radius: 999px; font-size: 10px;">{{ $pendingLeadCount }}</span>
+                @endif
+            </a>
             <a href="{{ route('profile.edit') }}"
                 class="bottom-nav-item {{ request()->routeIs('profile.*') ? 'active' : '' }}">
                 <svg class="svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
