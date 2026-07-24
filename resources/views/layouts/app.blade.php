@@ -71,6 +71,23 @@
                         </span>
                         <span>Üye Yönetimi</span>
                     </a>
+
+                    <a href="{{ route('admin.requests.index') }}"
+                        class="nav-item {{ request()->routeIs('admin.requests.*') ? 'active' : '' }}">
+                        <span class="nav-icon">
+                            <svg class="svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                            </svg>
+                        </span>
+                        <span>Müşteri Talepleri</span>
+                        @php
+                            $pendingLeadCount = \App\Models\ContactRequest::where('status', 'yeni')->count();
+                        @endphp
+                        @if($pendingLeadCount > 0)
+                            <span style="margin-left: auto; background: #f59e0b; color: #fff; font-weight: 700; padding: 2px 8px; border-radius: 999px; font-size: 11px;">{{ $pendingLeadCount }}</span>
+                        @endif
+                    </a>
                 @else
                     <div class="nav-section">Ana Menü</div>
 

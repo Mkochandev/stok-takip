@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\AdminUserController;
+use App\Http\Controllers\Admin\AdminContactRequestController;
+use App\Http\Controllers\Api\LeadApiController;
 use App\Http\Controllers\AylikHesapController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DevamController;
@@ -10,6 +12,9 @@ use App\Http\Controllers\IsController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UstaController;
 use Illuminate\Support\Facades\Route;
+
+// Tanıtım Sitesinden Gelen Webhook / API Rotası
+Route::post('/api/v1/website-leads', [LeadApiController::class, 'store'])->name('api.website-leads');
 
 // Auth rotaları (Breeze)
 require __DIR__.'/auth.php';
@@ -38,6 +43,12 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::post('/users/{user}/extend', [AdminUserController::class, 'extend'])->name('users.extend');
     Route::get('/users/{user}/backup', [AdminUserController::class, 'backup'])->name('users.backup');
     Route::delete('/users/{user}', [AdminUserController::class, 'destroy'])->name('users.destroy');
+
+    // Müşteri İletişim ve Ücretsiz Deneme Talepleri
+    Route::get('/requests', [AdminContactRequestController::class, 'index'])->name('requests.index');
+    Route::patch('/requests/{contactRequest}/status', [AdminContactRequestController::class, 'updateStatus'])->name('requests.update-status');
+    Route::post('/requests/{contactRequest}/convert', [AdminContactRequestController::class, 'convertToUser'])->name('requests.convert');
+    Route::delete('/requests/{contactRequest}', [AdminContactRequestController::class, 'destroy'])->name('requests.destroy');
 
     // Günlük Sistem Yedekleri
     Route::post('/backups/create', [AdminDashboardController::class, 'createBackup'])->name('backups.create');
