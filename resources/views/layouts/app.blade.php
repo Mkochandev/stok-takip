@@ -31,7 +31,6 @@
                 <div class="logo-text">Gazi Ustam</div>
                 <div class="logo-sub">Yönetim Paneli</div>
             </div>
-            <button class="mobile-close-btn" onclick="toggleSidebar()" aria-label="Kapat" style="background:none; border:none; font-size:1.2rem; cursor:pointer; color:var(--text-muted);">✕</button>
         </div>
 
         <nav class="sidebar-nav">
