@@ -658,7 +658,7 @@ a:hover { color: var(--accent-primary); }
     .sidebar.open { transform: translateX(0); }
     .main-content { margin-left: 0; }
     .top-header { padding: 0 16px; height: auto; min-height: 60px; padding-top: 10px; padding-bottom: 10px; }
-    .mobile-toggle-btn { display: inline-flex !important; }
+    .mobile-profile-btn { display: inline-flex !important; }
     .page-content { padding: 16px; margin-bottom: 64px; }
     .mobile-bottom-nav { display: flex; }
 }
