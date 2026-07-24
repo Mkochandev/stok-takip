@@ -82,20 +82,20 @@
         .login-left-content h2 {
             font-size: 2rem;
             font-weight: 800;
-            color: var(--text-primary);
+            color: #ffffff;
             margin-bottom: 12px;
             line-height: 1.2;
         }
 
         .login-left-content h2 span {
-            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            background: linear-gradient(135deg, #10b981, #6366f1);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
 
         .login-left-content p {
-            color: var(--text-muted);
+            color: #cbd5e1;
             font-size: 0.95rem;
             line-height: 1.7;
             margin-bottom: 40px;
@@ -112,8 +112,8 @@
             display: flex;
             align-items: center;
             gap: 12px;
-            background: rgba(255,255,255,0.04);
-            border: 1px solid var(--border-color);
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.15);
             border-radius: 12px;
             padding: 12px 16px;
             backdrop-filter: blur(10px);
@@ -125,8 +125,8 @@
 
         .feature-item .fi-text {
             font-size: 0.875rem;
-            color: var(--text-secondary);
-            font-weight: 500;
+            color: #f1f5f9;
+            font-weight: 600;
         }
 
         /* Sağ panel - Login formu */

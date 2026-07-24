@@ -36,7 +36,33 @@ class GelirGiderController extends Controller
 
         $toplamGelir = $gelirler->sum('tutar');
         $toplamGider = $giderler->sum('tutar');
-        $netBakiye   = $toplamGelir - $toplamGider;
+        $netDurum    = $toplamGelir - $toplamGider;
+        $netBakiye   = $netDurum;
+
+        $hareketler = collect();
+        foreach ($gelirler as $g) {
+            $hareketler->push([
+                'id'       => $g->id,
+                'tip'      => 'gelir',
+                'tarih'    => $g->tarih,
+                'aciklama' => $g->aciklama,
+                'kategori' => $g->kategori,
+                'is_adi'   => $g->ilgiliIs?->is_adi,
+                'tutar'    => $g->tutar,
+            ]);
+        }
+        foreach ($giderler as $gd) {
+            $hareketler->push([
+                'id'       => $gd->id,
+                'tip'      => 'gider',
+                'tarih'    => $gd->tarih,
+                'aciklama' => $gd->aciklama,
+                'kategori' => $gd->kategori ?? ($gd->usta ? $gd->usta->ad_soyad . ' Ödemesi' : 'Gider'),
+                'is_adi'   => $gd->ilgiliIs?->is_adi,
+                'tutar'    => $gd->tutar,
+            ]);
+        }
+        $hareketler = $hareketler->sortByDesc('tarih')->values();
 
         $yillar = range(now()->year, now()->year - 3);
         $aylar = [
@@ -46,7 +72,7 @@ class GelirGiderController extends Controller
         ];
 
         return view('gelir-gider.index', compact(
-            'gelirler', 'giderler', 'toplamGelir', 'toplamGider', 'netBakiye',
+            'gelirler', 'giderler', 'hareketler', 'toplamGelir', 'toplamGider', 'netDurum', 'netBakiye',
             'ay', 'yil', 'tip', 'yillar', 'aylar'
         ));
     }
