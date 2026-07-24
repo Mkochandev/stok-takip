@@ -12,25 +12,35 @@
 
 @push('styles')
 <style>
+.profile-grid {
+    display: grid;
+    grid-template-columns: 340px 1fr;
+    gap: 20px;
+}
+@media (max-width: 992px) {
+    .profile-grid {
+        grid-template-columns: 1fr;
+    }
+}
 .chart-container { position: relative; height: 200px; }
 .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 .info-item label {
     font-size:0.72rem; color:var(--text-muted); display:block;
     margin-bottom:3px; text-transform:uppercase; letter-spacing:0.05em;
 }
-.info-item span { font-size:0.95rem; font-weight:600; }
+.info-item span { font-size:0.95rem; font-weight:700; }
 
 .durum-banner {
-    padding: 14px 18px;
+    padding: 16px 20px;
     border-radius: var(--radius-md);
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 12px;
 }
-.durum-banner.biz-borclu  { background:rgba(239,68,68,0.1); border:1px solid rgba(239,68,68,0.3); }
-.durum-banner.usta-borclu { background:rgba(124,93,249,0.1); border:1px solid rgba(124,93,249,0.35); }
-.durum-banner.temiz       { background:rgba(34,197,94,0.08); border:1px solid rgba(34,197,94,0.25); }
+.durum-banner.biz-borclu  { background:#fef2f2; border:1px solid #fecaca; }
+.durum-banner.usta-borclu { background:#f5f3ff; border:1px solid #ddd6fe; }
+.durum-banner.temiz       { background:#ecfdf5; border:1px solid #a7f3d0; }
 
 .odeme-gecmis-item {
     display: flex; align-items: center; justify-content: space-between;
@@ -46,23 +56,23 @@
     color:var(--text-muted); cursor:pointer; transition:all 0.2s; text-decoration:none;
 }
 .ay-tab:hover { border-color:var(--accent-primary); color:var(--accent-primary); }
-.ay-tab.active { background:rgba(79,110,247,0.15); border-color:var(--accent-primary); color:var(--accent-primary); }
+.ay-tab.active { background:#eff6ff; border-color:#3b82f6; color:#1d4ed8; }
 
 /* Ödeme Modal */
 .odeme-modal-body { display:flex; flex-direction:column; gap:14px; }
 .odeme-modal-info {
-    background:var(--bg-primary); border-radius:var(--radius-sm);
+    background:var(--bg-primary); border-radius:var(--radius-sm); border: 1px solid var(--border-color);
     padding:12px 16px; display:flex; justify-content:space-between; align-items:center;
 }
 .odeme-confirm-overlay {
     display:none; position:fixed; inset:0; z-index:2000;
-    background:rgba(0,0,0,0.8); align-items:center; justify-content:center; padding:20px;
+    background:rgba(15, 23, 42, 0.6); backdrop-filter:blur(4px); align-items:center; justify-content:center; padding:20px;
 }
 .odeme-confirm-overlay.show { display:flex; }
 .odeme-confirm-box {
-    background:var(--bg-card); border:1px solid rgba(239,68,68,0.4);
+    background:#ffffff; border:1px solid var(--border-color);
     border-radius:var(--radius-xl); padding:32px; max-width:420px; width:100%;
-    text-align:center; box-shadow:0 20px 60px rgba(0,0,0,0.5);
+    text-align:center; box-shadow:var(--shadow-lg);
 }
 </style>
 @endpush

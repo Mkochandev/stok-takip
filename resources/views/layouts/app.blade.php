@@ -145,9 +145,13 @@
         {{-- Top Header --}}
         <header class="top-header">
             <div style="display:flex; align-items:center; gap:12px; min-width:0;">
-                <h1 class="page-title">@yield('page-title', 'Dashboard')</h1>
+                <button type="button" class="mobile-toggle-btn" onclick="toggleSidebar()" aria-label="Menü Aç"
+                        style="display:none; background:var(--bg-hover); border:1px solid var(--border-color); padding:6px 10px; border-radius:var(--radius-sm); cursor:pointer; color:var(--text-primary); align-items:center; justify-content:center;">
+                    <svg class="svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+                </button>
+                <h1 class="page-title" style="margin:0;">@yield('page-title', 'Dashboard')</h1>
             </div>
-            <div class="header-actions">
+            <div class="header-actions" style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
                 @yield('header-actions')
                 <span class="header-date">
                     {{ now()->locale('tr')->isoFormat('D MMMM YYYY, dddd') }}
