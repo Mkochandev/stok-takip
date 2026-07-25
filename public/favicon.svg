@@ -1,18 +1,18 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" {{ $attributes }}>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
   <defs>
-    <linearGradient id="gazi-grad-logo" x1="0%" y1="0%" x2="100%" y2="100%">
+    <linearGradient id="gazi-grad" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" stop-color="#10B981"/>
       <stop offset="50%" stop-color="#059669"/>
       <stop offset="100%" stop-color="#047857"/>
     </linearGradient>
-    <linearGradient id="gazi-accent-logo" x1="0%" y1="0%" x2="100%" y2="100%">
+    <linearGradient id="gazi-accent" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" stop-color="#34D399"/>
       <stop offset="100%" stop-color="#059669"/>
     </linearGradient>
-    <filter id="glow-logo" x="-20%" y="-20%" width="140%" height="140%">
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
       <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#059669" flood-opacity="0.35"/>
     </filter>
-    <filter id="inner-shadow-logo">
+    <filter id="inner-shadow">
       <feComponentTransfer in="SourceAlpha">
         <feFuncA type="linear" slope="0.7"/>
       </feComponentTransfer>
@@ -26,15 +26,16 @@
   </defs>
 
   <!-- Background Rounded Shield Box -->
-  <rect x="16" y="16" width="480" height="480" rx="128" fill="url(#gazi-grad-logo)" filter="url(#glow-logo)" />
+  <rect x="16" y="16" width="480" height="480" rx="128" fill="url(#gazi-grad)" filter="url(#glow)" />
   
   <!-- Subtle Geometry Overlay / Construction Grid Pattern -->
   <path d="M 128 64 L 384 64 A 64 64 0 0 1 448 128 L 448 384 A 64 64 0 0 1 384 448 L 128 448 A 64 64 0 0 1 64 384 L 64 128 A 64 64 0 0 1 128 64 Z" fill="none" stroke="#FFFFFF" stroke-opacity="0.08" stroke-width="4"/>
 
   <!-- Construction Roof / Badge Angle Ribbon at Top Right -->
-  <path d="M 320 120 L 390 120 L 390 190 Z" fill="url(#gazi-accent-logo)" opacity="0.9" />
+  <path d="M 320 120 L 390 120 L 390 190 Z" fill="url(#gazi-accent)" opacity="0.9" />
 
   <!-- Premium Crafted Letter 'G' with Construction / Usta Checkmark Flare -->
+  <!-- Outer Curve -->
   <path d="
     M 368 184 
     C 336 136 264 128 200 160 
@@ -50,7 +51,7 @@
     C 304 176 336 192 352 216 
     Z" 
     fill="#FFFFFF" 
-    filter="url(#inner-shadow-logo)" />
+    filter="url(#inner-shadow)" />
 
   <!-- Dynamic Usta Accent Badge (Diamond/Star at center top of G) -->
   <polygon points="256,92 268,116 292,116 272,130 280,154 256,140 232,154 240,130 220,116 244,116" fill="#FBBF24" opacity="0.95" />

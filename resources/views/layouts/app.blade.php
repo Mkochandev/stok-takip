@@ -9,6 +9,11 @@
     <title>@yield('title', 'Dashboard') — Gazi Ustam</title>
     <meta name="description" content="Gazi Ustam - Usta ve iş takip yönetim sistemi">
 
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="{{ asset('favicon.svg') }}">
+    <link rel="alternate icon" href="{{ asset('favicon.ico') }}">
+    <link rel="apple-touch-icon" href="{{ asset('favicon.svg') }}">
+
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -28,12 +33,7 @@
         {{-- ===== SIDEBAR ===== --}}
         <aside class="sidebar" id="sidebar">
             <div class="sidebar-logo">
-                <div class="logo-icon">
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
-                        stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
-                    </svg>
-                </div>
+                <img src="{{ asset('images/logo.svg') }}" alt="Gazi Ustam Logo" style="width: 38px; height: 38px; border-radius: 10px; object-fit: contain;">
                 <div style="flex: 1;">
                     <div class="logo-text">Gazi Ustam</div>
                     <div class="logo-sub">Yönetim Paneli</div>

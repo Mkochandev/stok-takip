@@ -7,6 +7,11 @@
     <title>Giriş Yap — Gazi Ustam</title>
     <meta name="description" content="Gazi Ustam Yönetim Paneli - Giriş Yapın">
 
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="{{ asset('favicon.svg') }}">
+    <link rel="alternate icon" href="{{ asset('favicon.ico') }}">
+    <link rel="apple-touch-icon" href="{{ asset('favicon.svg') }}">
+
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -63,15 +68,11 @@
 
         .login-hero-icon {
             width: 100px; height: 100px;
-            background: linear-gradient(135deg, #10b981, #059669);
-            border-radius: 24px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 3rem;
             margin: 0 auto 28px;
-            box-shadow: 0 20px 60px rgba(16, 185, 129, 0.3);
+            filter: drop-shadow(0 20px 40px rgba(16, 185, 129, 0.4));
             animation: float 3s ease-in-out infinite;
+            object-fit: contain;
+            display: block;
         }
 
         @keyframes float {
@@ -160,11 +161,8 @@
 
         .login-form-header .brand-icon {
             width: 44px; height: 44px;
-            background: linear-gradient(135deg, #10b981, #059669);
-            border-radius: 10px;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 1.3rem;
-            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
+            object-fit: contain;
+            filter: drop-shadow(0 4px 12px rgba(16, 185, 129, 0.3));
         }
 
         .login-form-header .brand-name {
@@ -368,7 +366,7 @@
     <div class="login-left">
         <div class="grid-bg"></div>
         <div class="login-left-content">
-            <div class="login-hero-icon">⚙️</div>
+            <img src="{{ asset('images/logo.svg') }}" alt="Gazi Ustam Logo" class="login-hero-icon">
             <h2>Gazi Ustam <span>Yönetim</span> Sistemi</h2>
             <p>Ustalarınızı, işlerinizi ve finansal süreçlerinizi tek yerden kolayca yönetin.</p>
 
@@ -399,7 +397,7 @@
 
             <div class="login-form-header">
                 <div class="brand">
-                    <div class="brand-icon">⚙️</div>
+                    <img src="{{ asset('images/logo.svg') }}" alt="Logo" class="brand-icon">
                     <div class="brand-name">Gazi Ustam</div>
                 </div>
                 <h1>Hoş Geldiniz</h1>

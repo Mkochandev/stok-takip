@@ -6,6 +6,11 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Gazi Ustam</title>
 
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="{{ asset('favicon.svg') }}">
+    <link rel="alternate icon" href="{{ asset('favicon.ico') }}">
+    <link rel="apple-touch-icon" href="{{ asset('favicon.svg') }}">
+
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -58,12 +63,10 @@
         }
         .guest-logo .logo-icon-big {
             width: 64px; height: 64px;
-            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
-            border-radius: var(--radius-lg);
-            display: flex; align-items: center; justify-content: center;
-            font-size: 2rem;
             margin: 0 auto 12px;
-            box-shadow: 0 10px 30px rgba(79,110,247,0.3);
+            display: block;
+            object-fit: contain;
+            filter: drop-shadow(0 10px 20px rgba(16, 185, 129, 0.3));
         }
         .guest-logo h1 { font-size: 1.4rem; font-weight: 700; }
         .guest-logo p { color: var(--text-muted); font-size: 0.875rem; margin-top: 4px; }
@@ -84,7 +87,7 @@
 <div class="guest-page">
     <div class="guest-card">
         <div class="guest-logo">
-            <div class="logo-icon-big">⚙️</div>
+            <img src="{{ asset('images/logo.svg') }}" alt="Gazi Ustam" class="logo-icon-big">
             <h1>Gazi Ustam</h1>
             <p>Yönetim Paneli</p>
         </div>
